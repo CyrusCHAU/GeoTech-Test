@@ -1,0 +1,9 @@
+{
+	"SourceFiles": [
+		"D:\\Cyrus\\AW\\GeoTech-Test\\GeoTechTest\\Source\\GeoTechTest\\GeoTechTest.Build.cs",
+		"D:\\Cyrus\\AW\\GeoTech-Test\\GeoTechTest\\Plugins\\Minesweeper\\Source\\Minesweeper\\Minesweeper.Build.cs",
+		"D:\\Cyrus\\AW\\GeoTech-Test\\GeoTechTest\\Source\\GeoTechTest.Target.cs",
+		"D:\\Cyrus\\AW\\GeoTech-Test\\GeoTechTest\\Source\\GeoTechTestEditor.Target.cs"
+	],
+	"EngineVersion": "5.0.3"
+}

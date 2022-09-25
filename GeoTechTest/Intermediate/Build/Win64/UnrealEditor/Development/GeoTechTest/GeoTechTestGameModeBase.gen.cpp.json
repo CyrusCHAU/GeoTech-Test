@@ -1,0 +1,19 @@
+{
+    "Version": "1.1",
+    "Data": {
+        "Source": "d:\\cyrus\\aw\\geotech-test\\geotechtest\\intermediate\\build\\win64\\unrealeditor\\inc\\geotechtest\\geotechtestgamemodebase.gen.cpp",
+        "ProvidedModule": "",
+        "PCH": "d:\\cyrus\\aw\\geotech-test\\geotechtest\\intermediate\\build\\win64\\geotechtesteditor\\development\\engine\\sharedpch.engine.shadowerrors.h.pch",
+        "Includes": [
+            "d:\\cyrus\\aw\\geotech-test\\geotechtest\\intermediate\\build\\win64\\unrealeditor\\development\\geotechtest\\definitions.geotechtest.h",
+            "d:\\cyrus\\aw\\geotech-test\\geotechtest\\source\\geotechtest\\geotechtestgamemodebase.h",
+            "d:\\program files\\epic games\\ue_5.0\\engine\\source\\runtime\\engine\\classes\\gameframework\\gamemodebase.h",
+            "d:\\program files\\epic games\\ue_5.0\\engine\\source\\runtime\\engine\\classes\\engine\\serverstatreplicator.h",
+            "d:\\program files\\epic games\\ue_5.0\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\serverstatreplicator.generated.h",
+            "d:\\program files\\epic games\\ue_5.0\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\gamemodebase.generated.h",
+            "d:\\cyrus\\aw\\geotech-test\\geotechtest\\intermediate\\build\\win64\\unrealeditor\\inc\\geotechtest\\geotechtestgamemodebase.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

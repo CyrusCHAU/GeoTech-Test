@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "GeoTechTest",
+			"Path": "D:\\Cyrus\\AW\\GeoTechTest\\Source\\GeoTechTest.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "GeoTechTestEditor",
+			"Path": "D:\\Cyrus\\AW\\GeoTechTest\\Source\\GeoTechTestEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}

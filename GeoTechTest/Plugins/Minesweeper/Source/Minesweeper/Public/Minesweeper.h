@@ -38,6 +38,6 @@ private:
 
 
 private:
-	FReply GenerateGridButtonClicked() const;
+	FReply GenerateGridButtonClicked() ;
 	void GenerateGridMain(int Width, int Height, int Mines);
 };

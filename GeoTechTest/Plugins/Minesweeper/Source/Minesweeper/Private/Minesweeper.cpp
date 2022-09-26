@@ -193,9 +193,12 @@ void FMinesweeperModule::RegisterMenus()
 	}
 }
 
-FReply FMinesweeperModule::GenerateGridButtonClicked() const
+FReply FMinesweeperModule::GenerateGridButtonClicked() 
 {
 	Input_GenerateGridLabel.Get()->SetText(FText::FromString(TEXT("Generated")));
+
+	GenerateGridMain(0, 0, 0);
+
 	return FReply::Handled();
 }
 
@@ -203,6 +206,24 @@ void FMinesweeperModule::GenerateGridMain(int Width, int Height, int Mines)
 {
 	//GridRoot + SVerticalBox::Slot();
 	//GridRoot->AddSlot().AttachWidget(Input_GenerateGridLabel);
+
+	// This can be compiled, but didn't show up
+	/*auto temp1 = GridRoot->AddSlot();
+	temp1
+		[
+			SNew(SButton)
+		];*/
+	GridRoot->AddSlot()
+		.HAlign(HAlign_Fill)
+		.VAlign(VAlign_Center)
+		[
+			SNew(SButton)
+			[
+				SAssignNew(Input_GenerateGridLabel, STextBlock)
+				.Text(FText::FromString(TEXT("Generate New Grid")))
+				.Justification(ETextJustify::Center)
+			]
+		];
 }
 
 #undef LOCTEXT_NAMESPACE

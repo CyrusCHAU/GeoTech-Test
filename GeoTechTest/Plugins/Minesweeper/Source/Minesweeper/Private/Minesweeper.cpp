@@ -66,81 +66,92 @@ void FMinesweeperModule::PluginButtonClicked()
 			SNew(SVerticalBox)
 
 			// 1st Row
-			+ SVerticalBox::Slot().HAlign(HAlign_Center).VAlign(VAlign_Center)
+			+ SVerticalBox::Slot()
+				.HAlign(HAlign_Center)
+				.VAlign(VAlign_Center)
 				[
 				SNew(STextBlock).Text(FText::FromString(TEXT("Welcome to Minesweeper!!!")))
 				]
 
 			// 2nd Row
-			+ SVerticalBox::Slot().HAlign(HAlign_Fill).VAlign(VAlign_Center)
+			+ SVerticalBox::Slot()
+				.HAlign(HAlign_Fill)
+				.VAlign(VAlign_Center)
 				[
 				SNew(SHorizontalBox) 
 				+ SHorizontalBox::Slot().HAlign(HAlign_Center).VAlign(VAlign_Center)
 					[
 						SNew(STextBlock).Text(FText::FromString(TEXT("Width")))
 					]
-				+ SHorizontalBox::Slot().HAlign(HAlign_Center).VAlign(VAlign_Center)
+				+ SHorizontalBox::Slot().HAlign(HAlign_Center).VAlign(VAlign_Center).FillWidth(1)
 					[
-						SNew(SSpacer).Size((10, 50))
+						SNew(SSpacer)//.Size((10, 30))
 					]
-				+ SHorizontalBox::Slot().HAlign(HAlign_Fill).VAlign(VAlign_Center)
+				+ SHorizontalBox::Slot().HAlign(HAlign_Fill).VAlign(VAlign_Center).FillWidth(1)
 					[
 						 SAssignNew(Input_WidthSpinBox, SSpinBox<int>).Value(5).MinFractionalDigits(0).MaxFractionalDigits(0).MinValue(0)
 					]
-				+ SHorizontalBox::Slot().HAlign(HAlign_Center).VAlign(VAlign_Center)
+				+ SHorizontalBox::Slot().HAlign(HAlign_Center).VAlign(VAlign_Center).FillWidth(1)
 					[
-						SNew(SSpacer).Size((10, 50))
+						SNew(SSpacer)//.Size((10, 30))
 					]
-				+ SHorizontalBox::Slot().HAlign(HAlign_Center).VAlign(VAlign_Center)
+				+ SHorizontalBox::Slot().HAlign(HAlign_Center).VAlign(VAlign_Center).FillWidth(1)
 					[
 						SNew(STextBlock).Text(FText::FromString(TEXT("Height")))
 					]
 				+ SHorizontalBox::Slot().HAlign(HAlign_Center).VAlign(VAlign_Center)
 					[
-						SNew(SSpacer).Size((10, 50))
+						SNew(SSpacer)//.Size((10, 30))
 					]
-				+ SHorizontalBox::Slot().HAlign(HAlign_Fill).VAlign(VAlign_Center)
+				+ SHorizontalBox::Slot().HAlign(HAlign_Fill).VAlign(VAlign_Center).FillWidth(1)
 					[
 						SAssignNew(Input_HeightSpinBox, SSpinBox<int>).Value(5).MinFractionalDigits(0).MaxFractionalDigits(0).MinValue(0)
+					]
+				+ SHorizontalBox::Slot().HAlign(HAlign_Center).VAlign(VAlign_Center)
+					[
+						SNew(SSpacer)//.Size((10, 30))
+					]
+				+ SHorizontalBox::Slot().HAlign(HAlign_Center).VAlign(VAlign_Center).FillWidth(3)
+					[
+						SNew(STextBlock).Text(FText::FromString(TEXT("Number Of Mines")))
+					]
+				+ SHorizontalBox::Slot().HAlign(HAlign_Center).VAlign(VAlign_Center).FillWidth(1)
+					[
+						SNew(SSpacer)//.Size((10, 30))
+					]
+				+ SHorizontalBox::Slot().HAlign(HAlign_Fill).VAlign(VAlign_Center).FillWidth(1)
+					[
+						SAssignNew(Input_NumberOfMinesSpinBox, SSpinBox<int>).Value(2).MinFractionalDigits(0).MaxFractionalDigits(0).MinValue(1)
+					]
+				+ SHorizontalBox::Slot().HAlign(HAlign_Center).VAlign(VAlign_Center).FillWidth(1)
+					[
+						SNew(SSpacer)//.Size((10, 30))
 					]
 				]
 
 			// 3rd Row
-			+ SVerticalBox::Slot().HAlign(HAlign_Fill).VAlign(VAlign_Center)
+			+ SVerticalBox::Slot()
+				.HAlign(HAlign_Fill)
+				.VAlign(VAlign_Center)
+				.Padding((0, 50))
 				[
-					SNew(SHorizontalBox)
-					+ SHorizontalBox::Slot().HAlign(HAlign_Center).VAlign(VAlign_Center)
+					SAssignNew(Input_GenerateGridButton, SButton)
+						.OnClicked(FOnClicked::CreateRaw(this, &FMinesweeperModule::GenerateGridButtonClicked)) //OnClicked_Raw(this, &FMinesweeperModule::GenerateGridButtonClicked
+						
 					[
-						SNew(SSpacer).Size((10, 50))
-					]
-					+ SHorizontalBox::Slot().HAlign(HAlign_Center).VAlign(VAlign_Center).FillWidth(1)
-					[
-						SNew(STextBlock).Text(FText::FromString(TEXT("Number Of Mines")))
-					]
-					+ SHorizontalBox::Slot().HAlign(HAlign_Center).VAlign(VAlign_Center)
-					[
-						SNew(SSpacer).Size((10, 50))
-					]
-					+ SHorizontalBox::Slot().HAlign(HAlign_Fill).VAlign(VAlign_Center).FillWidth(1)
-					[
-						SAssignNew(Input_NumberOfMinesSpinBox, SSpinBox<int>).Value(2).MinFractionalDigits(0).MaxFractionalDigits(0).MinValue(0)
-					]
-					+ SHorizontalBox::Slot().HAlign(HAlign_Center).VAlign(VAlign_Center)
-					[
-						SNew(SSpacer).Size((10, 50))
-					]
+						SAssignNew(Input_GenerateGridLabel, STextBlock)
+							.Text(FText::FromString(TEXT("Generate New Grid")))
+							.Justification(ETextJustify::Center)
+					]					
 				]
 
 			// 4th Row
-			+ SVerticalBox::Slot().HAlign(HAlign_Center).VAlign(VAlign_Center)
+			+ SVerticalBox::Slot()
+				.HAlign(HAlign_Center)
+				.VAlign(VAlign_Center)
+				.FillHeight(5)
 				[
-					SAssignNew(Input_GenerateGridButton, SButton).
-						OnClicked(FOnClicked::CreateRaw(this, &FMinesweeperModule::GenerateGridButtonClicked)) //OnClicked_Raw(this, &FMinesweeperModule::GenerateGridButtonClicked)		
-					[
-						SAssignNew(Input_GenerateGridLabel, STextBlock).
-							Text(FText::FromString(TEXT("Generate New Grid")))
-					]
-					
+					SAssignNew(GridRoot, SVerticalBox)
 				]
 		];
 
@@ -184,9 +195,14 @@ void FMinesweeperModule::RegisterMenus()
 
 FReply FMinesweeperModule::GenerateGridButtonClicked() const
 {
-	//ButtonLabel->SetText(FString(TEXT("Clicked!")));
 	Input_GenerateGridLabel.Get()->SetText(FText::FromString(TEXT("Generated")));
 	return FReply::Handled();
+}
+
+void FMinesweeperModule::GenerateGridMain(int Width, int Height, int Mines)
+{
+	//GridRoot + SVerticalBox::Slot();
+	//GridRoot->AddSlot().AttachWidget(Input_GenerateGridLabel);
 }
 
 #undef LOCTEXT_NAMESPACE

@@ -34,7 +34,10 @@ private:
 	TSharedPtr<SSpinBox<int>> Input_NumberOfMinesSpinBox;
 	TSharedPtr<SButton> Input_GenerateGridButton;
 	TSharedPtr<STextBlock> Input_GenerateGridLabel;
+	TSharedPtr<SVerticalBox> GridRoot;
+
 
 private:
 	FReply GenerateGridButtonClicked() const;
+	void GenerateGridMain(int Width, int Height, int Mines);
 };

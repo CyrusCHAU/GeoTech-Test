@@ -38,24 +38,51 @@ private:
 	TSharedPtr<STextBlock> Input_GenerateGridLabel;
 	TSharedPtr<SVerticalBox> GridVerticalBoxRoot;
 
+	/** 
+	* Key: Button Pointer.
+	* Value: Location, start from 0. 
+	*/
+	TMap<TSharedPtr<SButton>, FIntPoint> GeneratedButtonIDs;
+	int ButtonSize_Width = 48;
+	int ButtonSize_Height = 48;
+
 #pragma endregion
 
-#pragma region Generate Buttons
+#pragma region Mines & Grid
 
-	TArray<TSharedPtr<SButton>> GeneratedButtons;
 	int GridWidth;
 	int GridHeight;
 	int GridMines;
 
+	TArray<FIntPoint> MinesMap;
+
 #pragma endregion
 
-#pragma region Generate Button Method
+#pragma region Generate Mines / Grid Button Method
 
 private:
-	FReply GenerateGridButtonClicked() ;
-	void GenerateGridMain(int Width, int Height, int Mines);
+
+	/** Called when user clicked "Generate Button". */
+	FReply OnGenerateGridButtonClicked();
+
+	/** Main action to generate a new grid. */
+	void GenerateGridMain(int InWidth, int InHeight, int InMines);
+
+	/** Add a grid button. For internal use only. */
 	TSharedPtr<SButton> AddGridButtonCore(TSharedPtr<SHorizontalBox> InHorizontalBox);
 
+	/** Empty all grid & buttons. */
+	void ClearAllButtons();
+
+	/** Called when user click a grid button during finding a mine. */
+	FReply OnMineButtonClicked(TSharedPtr<SButton> InButton);
+
+	/** Generate a new Mines Map, which returns a FVector2D. */
+	TArray<FIntPoint> GenerateMinesMapMain(int InWidth, int InHeight, int InMines);
+
+	/** Action for a lose game. */
+	void LoseGameMain();
+	
 #pragma endregion
 
 

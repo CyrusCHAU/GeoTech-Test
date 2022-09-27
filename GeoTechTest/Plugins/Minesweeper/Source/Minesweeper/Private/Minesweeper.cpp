@@ -54,9 +54,7 @@ void FMinesweeperModule::PluginButtonClicked()
 	//				   );
 	//FMessageDialog::Open(EAppMsgType::Ok, DialogText);
 
-	//TSharedRef<SSpinBox<int>, ESPMode::ThreadSafe> Input_WidthSpinBox;
-
-	// Cyrus
+	// Init Create Window
 	TSharedRef<SWindow> MinesweeperWindow = SNew(SWindow)
 		.Title(FText::FromString(TEXT("Minesweeper Window")))
 		.ClientSize(FVector2D(800, 400))
@@ -65,7 +63,7 @@ void FMinesweeperModule::PluginButtonClicked()
 		[
 			SNew(SVerticalBox)
 
-			// 1st Row
+			// 1st Row: Custom Title
 			+ SVerticalBox::Slot()
 				.HAlign(HAlign_Center)
 				.VAlign(VAlign_Center)
@@ -73,7 +71,7 @@ void FMinesweeperModule::PluginButtonClicked()
 				SNew(STextBlock).Text(FText::FromString(TEXT("Welcome to Minesweeper!!!")))
 				]
 
-			// 2nd Row
+			// 2nd Row: Input Field
 			+ SVerticalBox::Slot()
 				.HAlign(HAlign_Fill)
 				.VAlign(VAlign_Center)
@@ -85,15 +83,16 @@ void FMinesweeperModule::PluginButtonClicked()
 					]
 				+ SHorizontalBox::Slot().HAlign(HAlign_Center).VAlign(VAlign_Center).FillWidth(1)
 					[
-						SNew(SSpacer)//.Size((10, 30))
+						SNew(SSpacer)
 					]
 				+ SHorizontalBox::Slot().HAlign(HAlign_Fill).VAlign(VAlign_Center).FillWidth(1)
 					[
-						 SAssignNew(Input_WidthSpinBox, SSpinBox<int>).Value(5).MinFractionalDigits(0).MaxFractionalDigits(0).MinValue(0)
+						// The Width SpinBox
+						 SAssignNew(Input_WidthSpinBox, SSpinBox<int>).Value(5).MinFractionalDigits(0).MaxFractionalDigits(0).MinValue(1)
 					]
 				+ SHorizontalBox::Slot().HAlign(HAlign_Center).VAlign(VAlign_Center).FillWidth(1)
 					[
-						SNew(SSpacer)//.Size((10, 30))
+						SNew(SSpacer)
 					]
 				+ SHorizontalBox::Slot().HAlign(HAlign_Center).VAlign(VAlign_Center).FillWidth(1)
 					[
@@ -101,15 +100,16 @@ void FMinesweeperModule::PluginButtonClicked()
 					]
 				+ SHorizontalBox::Slot().HAlign(HAlign_Center).VAlign(VAlign_Center)
 					[
-						SNew(SSpacer)//.Size((10, 30))
+						SNew(SSpacer)
 					]
 				+ SHorizontalBox::Slot().HAlign(HAlign_Fill).VAlign(VAlign_Center).FillWidth(1)
 					[
-						SAssignNew(Input_HeightSpinBox, SSpinBox<int>).Value(5).MinFractionalDigits(0).MaxFractionalDigits(0).MinValue(0)
+						// The Height SpinBox
+						SAssignNew(Input_HeightSpinBox, SSpinBox<int>).Value(5).MinFractionalDigits(0).MaxFractionalDigits(0).MinValue(1)
 					]
 				+ SHorizontalBox::Slot().HAlign(HAlign_Center).VAlign(VAlign_Center)
 					[
-						SNew(SSpacer)//.Size((10, 30))
+						SNew(SSpacer)
 					]
 				+ SHorizontalBox::Slot().HAlign(HAlign_Center).VAlign(VAlign_Center).FillWidth(3)
 					[
@@ -117,26 +117,27 @@ void FMinesweeperModule::PluginButtonClicked()
 					]
 				+ SHorizontalBox::Slot().HAlign(HAlign_Center).VAlign(VAlign_Center).FillWidth(1)
 					[
-						SNew(SSpacer)//.Size((10, 30))
+						SNew(SSpacer)
 					]
 				+ SHorizontalBox::Slot().HAlign(HAlign_Fill).VAlign(VAlign_Center).FillWidth(1)
 					[
+						// The Number of Mines SpinBox
 						SAssignNew(Input_NumberOfMinesSpinBox, SSpinBox<int>).Value(2).MinFractionalDigits(0).MaxFractionalDigits(0).MinValue(1)
 					]
 				+ SHorizontalBox::Slot().HAlign(HAlign_Center).VAlign(VAlign_Center).FillWidth(1)
 					[
-						SNew(SSpacer)//.Size((10, 30))
+						SNew(SSpacer)
 					]
 				]
 
-			// 3rd Row
+			// 3rd Row: The Generate Button
 			+ SVerticalBox::Slot()
 				.HAlign(HAlign_Fill)
 				.VAlign(VAlign_Center)
 				.Padding((0, 50))
 				[
 					SAssignNew(Input_GenerateGridButton, SButton)
-						.OnClicked(FOnClicked::CreateRaw(this, &FMinesweeperModule::GenerateGridButtonClicked)) //OnClicked_Raw(this, &FMinesweeperModule::GenerateGridButtonClicked
+						.OnClicked(FOnClicked::CreateRaw(this, &FMinesweeperModule::OnGenerateGridButtonClicked)) //OnClicked_Raw(this, &FMinesweeperModule::GenerateGridButtonClicked
 						
 					[
 						SAssignNew(Input_GenerateGridLabel, STextBlock)
@@ -145,11 +146,11 @@ void FMinesweeperModule::PluginButtonClicked()
 					]					
 				]
 
-			// 4th Row
+			// 4th Row: The Buttons
 			+ SVerticalBox::Slot()
 				.HAlign(HAlign_Center)
 				.VAlign(VAlign_Center)
-				.FillHeight(5)
+				.FillHeight(8)
 				[
 					SAssignNew(GridVerticalBoxRoot, SVerticalBox)
 				]
@@ -193,7 +194,7 @@ void FMinesweeperModule::RegisterMenus()
 	}
 }
 
-FReply FMinesweeperModule::GenerateGridButtonClicked() 
+FReply FMinesweeperModule::OnGenerateGridButtonClicked() 
 {
 	// Store values from SpinBox
 	GridWidth = Input_WidthSpinBox.Get()->GetValue();
@@ -237,27 +238,40 @@ void FMinesweeperModule::GenerateGridMain(int InWidth, int InHeight, int InMines
 	//		]
 	//	];
 
-	// Clear Stored Buttons
-	GeneratedButtons.Empty();
-
-	// Height, Row
-	for (int i = 0; i < InHeight; i++)
+	// Check Conditions. Only play when number of mines is smaller than the total grid size.
+	if (InMines < InWidth * InHeight)
 	{
-		// Add a Horizontal Box
-		TSharedPtr<SHorizontalBox> tempHorizontalBox;
+		// Clear All Buttons Under Root
+		ClearAllButtons();
 
-		GridVerticalBoxRoot->AddSlot()
-			.HAlign(HAlign_Fill)
-			.VAlign(VAlign_Center)
-			[
-				SAssignNew(tempHorizontalBox, SHorizontalBox)
-			];
-
-		// Width, Column
-		for (int w = 0; w < InWidth; w++)
+		// Height, Row
+		for (int h = 0; h < InHeight; h++)
 		{
-			GeneratedButtons.Add(AddGridButtonCore(tempHorizontalBox));
+			// Add a Horizontal Box
+			TSharedPtr<SHorizontalBox> tempHorizontalBox;
+
+			// Construct a Vertical Box's Slot for Height
+			GridVerticalBoxRoot->AddSlot()
+				.HAlign(HAlign_Center)
+				.VAlign(VAlign_Center)
+				.AutoHeight()
+				[
+					SAssignNew(tempHorizontalBox, SHorizontalBox)
+				];
+
+			// Width, Column
+			for (int w = 0; w < InWidth; w++)
+			{
+				GeneratedButtonIDs.Add(AddGridButtonCore(tempHorizontalBox), FIntPoint(h, w));
+			}
 		}
+
+		// Spawn Mines Map
+		MinesMap = GenerateMinesMapMain(InWidth, InHeight, InMines);
+	} 
+	else
+	{
+		return;
 	}
 }
 
@@ -268,17 +282,95 @@ TSharedPtr<SButton> FMinesweeperModule::AddGridButtonCore(TSharedPtr<SHorizontal
 
 	// Add Slot, Button, Button's Label
 	InHorizontalBox->AddSlot()
+		.AutoWidth()
 		[
-		SAssignNew(tempButton, SButton)
-			[
-				SNew(STextBlock)
-				.Text(FText::FromString(TEXT("[]")))
-				.Justification(ETextJustify::Center)
-			]
+			SNew(SBox)
+				.WidthOverride(ButtonSize_Width)
+				.HeightOverride(ButtonSize_Height)
+				[
+					SAssignNew(tempButton, SButton)
+						.HAlign(HAlign_Center)
+						.VAlign(VAlign_Center)
+						.OnClicked_Raw(this, &FMinesweeperModule::OnMineButtonClicked, tempButton)
+						[
+							SNew(STextBlock)
+								.Text(FText::FromString(TEXT("[  ]")))
+								.Justification(ETextJustify::Center)
+						]
+				]
 		];
 
 	return tempButton;
 }
+
+void FMinesweeperModule::ClearAllButtons()
+{
+	// Clear Stored Buttons
+	GeneratedButtonIDs.Empty();
+
+	// Remove All Childs
+	GridVerticalBoxRoot->ClearChildren();
+}
+
+FReply FMinesweeperModule::OnMineButtonClicked(TSharedPtr<SButton> InButton)
+{
+	// Has InButton?
+	if (InButton)
+	{
+		// Check if Valid InButton
+		if (GeneratedButtonIDs.Contains(InButton))
+		{
+			// Find out which location did user pressed
+			const FIntPoint tempClickedLocation = *GeneratedButtonIDs.Find(InButton);
+
+			// Check if clicked a mine? 
+			if (MinesMap.Contains(tempClickedLocation))
+			{
+				// Lose Game
+				LoseGameMain();
+			}
+		}
+	}
+	else
+	{
+		FText DialogText = FText::FromString(TEXT("Invalid InButton!"));
+
+		FMessageDialog::Open(EAppMsgType::Ok, DialogText);
+	}
+
+	return FReply::Handled();
+}
+
+TArray<FIntPoint> FMinesweeperModule::GenerateMinesMapMain(int InWidth, int InHeight, int InMines)
+{
+	// Init a FIntPoint
+	TArray<FIntPoint> tempMinesLocations;
+
+	// Keep doing random place a mine
+	while (tempMinesLocations.Num() < InMines)
+	{
+		// First random spawn a number first
+		int tempW = FMath::RandHelper(InWidth - 1);
+		int tempH = FMath::RandHelper(InHeight - 1);
+
+		// Only accept when there is no same mine location
+		if (!tempMinesLocations.Contains(FIntPoint(tempW, tempH)))
+		{
+			tempMinesLocations.Add(FIntPoint(tempW, tempH));
+		}
+	}
+
+	return tempMinesLocations;
+}
+
+void FMinesweeperModule::LoseGameMain()
+{
+	FText DialogText = FText::FromString(TEXT("You Clicked a Mine! Press \"OK\" to play again!"));
+
+	FMessageDialog::Open(EAppMsgType::Ok, DialogText);
+}
+
+
 
 #undef LOCTEXT_NAMESPACE
 	

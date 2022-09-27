@@ -237,7 +237,8 @@ void FMinesweeperModule::GenerateGridMain(int InWidth, int InHeight, int InMines
 	//		]
 	//	];
 
-
+	// Clear Stored Buttons
+	GeneratedButtons.Empty();
 
 	// Height, Row
 	for (int i = 0; i < InHeight; i++)
@@ -252,36 +253,27 @@ void FMinesweeperModule::GenerateGridMain(int InWidth, int InHeight, int InMines
 				SAssignNew(tempHorizontalBox, SHorizontalBox)
 			];
 
+		// Width, Column
 		for (int w = 0; w < InWidth; w++)
 		{
-			AddGridButtonCore(tempHorizontalBox);
+			GeneratedButtons.Add(AddGridButtonCore(tempHorizontalBox));
 		}
 	}
 }
 
 TSharedPtr<SButton> FMinesweeperModule::AddGridButtonCore(TSharedPtr<SHorizontalBox> InHorizontalBox)
 {
+	// Temp Spawned Button
 	TSharedPtr<SButton> tempButton;
-	
-	// Add Vertical Box Slot
-	//GridVerticalBoxRoot->AddSlot()
-	//	.HAlign(HAlign_Fill)
-	//	.VAlign(VAlign_Center)
-	//	[
-	//		SAssignNew(tempButton, SButton)
-	//		[
-	//			SNew(STextBlock)
-	//			.Text(FText::FromString(TEXT("Generate New Grid")))
-	//			.Justification(ETextJustify::Center)
-	//		]
-	//	];
+
+	// Add Slot, Button, Button's Label
 	InHorizontalBox->AddSlot()
 		[
 		SAssignNew(tempButton, SButton)
 			[
 				SNew(STextBlock)
-				.Text(FText::FromString(TEXT("Generate New Grid")))
-			.Justification(ETextJustify::Center)
+				.Text(FText::FromString(TEXT("[]")))
+				.Justification(ETextJustify::Center)
 			]
 		];
 

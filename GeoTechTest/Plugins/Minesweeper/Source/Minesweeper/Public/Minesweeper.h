@@ -49,10 +49,14 @@ private:
 
 #pragma endregion
 
-
+#pragma region Generate Button Method
 
 private:
 	FReply GenerateGridButtonClicked() ;
 	void GenerateGridMain(int Width, int Height, int Mines);
 	TSharedPtr<SButton> AddGridButtonCore(TSharedPtr<SHorizontalBox> InHorizontalBox);
+
+#pragma endregion
+
+
 };

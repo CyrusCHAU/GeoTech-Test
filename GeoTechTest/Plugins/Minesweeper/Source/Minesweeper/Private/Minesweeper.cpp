@@ -207,19 +207,22 @@ void FMinesweeperModule::GenerateGridMain(int Width, int Height, int Mines)
 	//GridRoot + SVerticalBox::Slot();
 	//GridRoot->AddSlot().AttachWidget(Input_GenerateGridLabel);
 
-	// This can be compiled, but didn't show up
-	/*auto temp1 = GridRoot->AddSlot();
+	/** This can be compiled, but didn't show up
+	auto temp1 = GridRoot->AddSlot();
 	temp1
 		[
 			SNew(SButton)
-		];*/
+		];
+	*/
 	GridRoot->AddSlot()
 		.HAlign(HAlign_Fill)
 		.VAlign(VAlign_Center)
 		[
 			SNew(SButton)
+			//.AddMetaData()
+			//.OnClicked_Raw()
 			[
-				SAssignNew(Input_GenerateGridLabel, STextBlock)
+				SNew(STextBlock)
 				.Text(FText::FromString(TEXT("Generate New Grid")))
 				.Justification(ETextJustify::Center)
 			]

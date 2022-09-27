@@ -29,15 +29,30 @@ private:
 private:
 	TSharedPtr<class FUICommandList> PluginCommands;
 
+#pragma region Slate
+
 	TSharedPtr<SSpinBox<int>> Input_WidthSpinBox;
 	TSharedPtr<SSpinBox<int>> Input_HeightSpinBox;
 	TSharedPtr<SSpinBox<int>> Input_NumberOfMinesSpinBox;
 	TSharedPtr<SButton> Input_GenerateGridButton;
 	TSharedPtr<STextBlock> Input_GenerateGridLabel;
-	TSharedPtr<SVerticalBox> GridRoot;
+	TSharedPtr<SVerticalBox> GridVerticalBoxRoot;
+
+#pragma endregion
+
+#pragma region Generate Buttons
+
+	TArray<TSharedPtr<SButton>> GeneratedButtons;
+	int GridWidth;
+	int GridHeight;
+	int GridMines;
+
+#pragma endregion
+
 
 
 private:
 	FReply GenerateGridButtonClicked() ;
 	void GenerateGridMain(int Width, int Height, int Mines);
+	TSharedPtr<SButton> AddGridButtonCore(TSharedPtr<SHorizontalBox> InHorizontalBox);
 };

@@ -151,7 +151,7 @@ void FMinesweeperModule::PluginButtonClicked()
 				.VAlign(VAlign_Center)
 				.FillHeight(5)
 				[
-					SAssignNew(GridRoot, SVerticalBox)
+					SAssignNew(GridVerticalBoxRoot, SVerticalBox)
 				]
 		];
 
@@ -195,14 +195,21 @@ void FMinesweeperModule::RegisterMenus()
 
 FReply FMinesweeperModule::GenerateGridButtonClicked() 
 {
-	Input_GenerateGridLabel.Get()->SetText(FText::FromString(TEXT("Generated")));
+	// Store values from SpinBox
+	GridWidth = Input_WidthSpinBox.Get()->GetValue();
+	GridHeight = Input_HeightSpinBox.Get()->GetValue();
+	GridMines = Input_NumberOfMinesSpinBox.Get()->GetValue();
 
-	GenerateGridMain(0, 0, 0);
+	// Generate Grid Main Action
+	GenerateGridMain(GridWidth, GridHeight, GridMines);
+
+	// After Sucessful, Give a Message in Button
+	Input_GenerateGridLabel.Get()->SetText(FText::FromString(TEXT("Generated")));
 
 	return FReply::Handled();
 }
 
-void FMinesweeperModule::GenerateGridMain(int Width, int Height, int Mines)
+void FMinesweeperModule::GenerateGridMain(int InWidth, int InHeight, int InMines)
 {
 	//GridRoot + SVerticalBox::Slot();
 	//GridRoot->AddSlot().AttachWidget(Input_GenerateGridLabel);
@@ -214,19 +221,71 @@ void FMinesweeperModule::GenerateGridMain(int Width, int Height, int Mines)
 			SNew(SButton)
 		];
 	*/
-	GridRoot->AddSlot()
-		.HAlign(HAlign_Fill)
-		.VAlign(VAlign_Center)
+
+	//// Add Vertical Box Slot
+	//GridVerticalBoxRoot->AddSlot()
+	//	.HAlign(HAlign_Fill)
+	//	.VAlign(VAlign_Center)
+	//	[
+	//		SNew(SButton)
+	//		//.AddMetaData()
+	//		//.OnClicked_Raw()
+	//		[
+	//			SNew(STextBlock)
+	//			.Text(FText::FromString(TEXT("Generate New Grid")))
+	//			.Justification(ETextJustify::Center)
+	//		]
+	//	];
+
+
+
+	// Height, Row
+	for (int i = 0; i < InHeight; i++)
+	{
+		// Add a Horizontal Box
+		TSharedPtr<SHorizontalBox> tempHorizontalBox;
+
+		GridVerticalBoxRoot->AddSlot()
+			.HAlign(HAlign_Fill)
+			.VAlign(VAlign_Center)
+			[
+				SAssignNew(tempHorizontalBox, SHorizontalBox)
+			];
+
+		for (int w = 0; w < InWidth; w++)
+		{
+			AddGridButtonCore(tempHorizontalBox);
+		}
+	}
+}
+
+TSharedPtr<SButton> FMinesweeperModule::AddGridButtonCore(TSharedPtr<SHorizontalBox> InHorizontalBox)
+{
+	TSharedPtr<SButton> tempButton;
+	
+	// Add Vertical Box Slot
+	//GridVerticalBoxRoot->AddSlot()
+	//	.HAlign(HAlign_Fill)
+	//	.VAlign(VAlign_Center)
+	//	[
+	//		SAssignNew(tempButton, SButton)
+	//		[
+	//			SNew(STextBlock)
+	//			.Text(FText::FromString(TEXT("Generate New Grid")))
+	//			.Justification(ETextJustify::Center)
+	//		]
+	//	];
+	InHorizontalBox->AddSlot()
 		[
-			SNew(SButton)
-			//.AddMetaData()
-			//.OnClicked_Raw()
+		SAssignNew(tempButton, SButton)
 			[
 				SNew(STextBlock)
 				.Text(FText::FromString(TEXT("Generate New Grid")))
-				.Justification(ETextJustify::Center)
+			.Justification(ETextJustify::Center)
 			]
 		];
+
+	return tempButton;
 }
 
 #undef LOCTEXT_NAMESPACE

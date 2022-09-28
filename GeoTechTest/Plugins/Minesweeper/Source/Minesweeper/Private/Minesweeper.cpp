@@ -359,10 +359,10 @@ FReply  FMinesweeperModule::OnMineButtonClicked(FIntPoint InLocation)
 			OpenedMap.Add(InLocation);
 
 			// Get the related button
-			//TSharedPtr<SMinesWidget>* tempRelatedWidget = GeneratedButtonIDs.Find(InLocation);
+			TSharedPtr<SMinesWidget>* tempRelatedWidget = GeneratedButtonIDs.Find(InLocation);
 
 			// Change it style to show it is "Empty" to user
-			//tempRelatedWidget->Get()->DisplayEmptyStyle();
+			tempRelatedWidget->Get()->DisplayEmptyStyle();
 		}
 		// No empty grid, Win the Game!
 		else

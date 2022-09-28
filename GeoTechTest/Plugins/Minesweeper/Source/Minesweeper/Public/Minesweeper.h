@@ -43,7 +43,8 @@ private:
 	* Key: Button Pointer.
 	* Value: Location, start from 0. 
 	*/
-	//TMap<FIntPoint, TSharedPtr<SMinesWidget>> GeneratedButtonIDs;
+	TMap<FIntPoint, TSharedPtr<SMinesWidget>> GeneratedButtonIDs;
+	TMap<FIntPoint, TSharedPtr<SMinesWidget>> tempSlot;
 	int ButtonSize_Width = 48;
 	int ButtonSize_Height = 48;
 

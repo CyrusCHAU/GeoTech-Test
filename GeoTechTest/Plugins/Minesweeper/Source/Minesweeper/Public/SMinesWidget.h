@@ -6,12 +6,8 @@
 #include "Widgets/SCompoundWidget.h"
 #include "Minesweeper.h"
 
-//DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnClickedSignature, SMinesWidget*, InWidget);
-//DECLARE_MULTICAST_DELEGATE_OneParam(FOnClickedSignature, FIntPoint, InLocation)
-
-//DECLARE_MULTICAST_DELEGATE_OneParam(FOnClickedSignature, FIntPoint, temp1);
-//DECLARE_DELEGATE_RetVal(FReply, FImageOnClicked); //this is OK
-DECLARE_DELEGATE_RetVal_OneParam(FReply, FOnClickedSignature, FIntPoint); //this is OK
+/** Declare a delegate for OnClicked */
+DECLARE_DELEGATE_RetVal_OneParam(FReply, FOnClickedSignature, FIntPoint);
 
 /**
  * 
@@ -20,19 +16,13 @@ class MINESWEEPER_API SMinesWidget : public SCompoundWidget
 {
 public:
 
-	//typedef typename TSlateDelegates<SMinesWidget>::FOnGenerateRow FOnGenerateRow; M1
-
 #pragma region Slate Argument
 
 	SLATE_BEGIN_ARGS(SMinesWidget) 
 		: _OnClicked()
 	{}
 	
-	/** My owning FMinesweeperModule object. */
-	//SLATE_ARGUMENT(FMinesweeperModule*, OwnRoot);
-	//SLATE_ARGUMENT(TWeakObjectPtr<class FMinesweeperModule>, OwnRoot);
-
-	//SLATE_EVENT(FOnGenerateRow, OnGenerateRow) M1
+	/** Expose OnClicked to Slate Event. */
 	SLATE_EVENT(FOnClickedSignature, OnClicked)
 
 	/** The mines location */ 
@@ -41,8 +31,6 @@ public:
 	SLATE_END_ARGS()
 
 #pragma endregion
-
-	//TWeakObjectPtr<FMinesweeperModule> OwnRoot;
 
 	/** My mines button*/
 	TSharedPtr<SButton> MyButton;
@@ -59,11 +47,12 @@ public:
 	void Construct(const FArguments& InArgs);
 
 private:
+
+	/** This is private function. Called when my button is fire OnClick. */
 	FReply OnButtonClicked();
 
 public:
-	/*UDELEGATE()
-	FOnClickedSignature OnClicked; */
 
+	/** Public delegate that other needs to bind.*/
 	FOnClickedSignature MyOnClickedAction;
 };

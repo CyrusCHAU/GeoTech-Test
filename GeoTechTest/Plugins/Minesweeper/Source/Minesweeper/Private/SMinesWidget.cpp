@@ -7,9 +7,11 @@
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 void SMinesWidget::Construct(const FArguments& InArgs)
 {
+	// Let all Args set into this var
 	MyOnClickedAction = InArgs._OnClicked;
 	MinesLocation = InArgs._MinesLocation;
 	
+	// Create Custom Widget
 	ChildSlot
 	[
 		SAssignNew(MyButton, SButton)
@@ -28,8 +30,7 @@ END_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
 FReply SMinesWidget::OnButtonClicked()
 {
-	//OnClicked.Broadcast(MinesLocation);
-
+	// Execute a delegate
 	if (MyOnClickedAction.IsBound())
 	{
 		MyOnClickedAction.Execute(MinesLocation);
@@ -42,8 +43,3 @@ FReply SMinesWidget::OnButtonClicked()
 
 	return FReply::Handled();
 }
-
-//FOnClickedSignature SMinesWidget::OnClicked(SMinesWidget* InWidget)
-//{
-//	return FOnClickedSignature();
-//}

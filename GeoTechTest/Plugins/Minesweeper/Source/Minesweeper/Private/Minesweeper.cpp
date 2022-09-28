@@ -262,7 +262,8 @@ void FMinesweeperModule::GenerateGridMain(int InWidth, int InHeight, int InMines
 			// Width, Column
 			for (int w = 0; w < InWidth; w++)
 			{
-				GeneratedButtonIDs.Add(AddGridButtonCore(tempHorizontalBox), FIntPoint(h, w));
+				FIntPoint tempLocation = FIntPoint(h, w);
+				GeneratedButtonIDs.Add(AddGridButtonCore(tempHorizontalBox, tempLocation), tempLocation);
 			}
 		}
 
@@ -275,7 +276,7 @@ void FMinesweeperModule::GenerateGridMain(int InWidth, int InHeight, int InMines
 	}
 }
 
-TSharedPtr<SButton> FMinesweeperModule::AddGridButtonCore(TSharedPtr<SHorizontalBox> InHorizontalBox)
+TSharedPtr<SButton> FMinesweeperModule::AddGridButtonCore(TSharedPtr<SHorizontalBox> InHorizontalBox, FIntPoint InLocation)
 {
 	// Temp Spawned Button
 	TSharedPtr<SButton> tempButton;
@@ -288,7 +289,11 @@ TSharedPtr<SButton> FMinesweeperModule::AddGridButtonCore(TSharedPtr<SHorizontal
 				.WidthOverride(ButtonSize_Width)
 				.HeightOverride(ButtonSize_Height)
 				[
-					SAssignNew(tempButton, SButton)
+					SNew(SMinesWidget)
+						//.OwnRoot(this->Cr)
+						.MinesLocation(InLocation)
+						.OnClicked_Raw(this, &FMinesweeperModule::OnMineButtonClicked)
+					/*SAssignNew(tempButton, SButton)
 						.HAlign(HAlign_Center)
 						.VAlign(VAlign_Center)
 						.OnClicked_Raw(this, &FMinesweeperModule::OnMineButtonClicked, tempButton)
@@ -296,7 +301,7 @@ TSharedPtr<SButton> FMinesweeperModule::AddGridButtonCore(TSharedPtr<SHorizontal
 							SNew(STextBlock)
 								.Text(FText::FromString(TEXT("[  ]")))
 								.Justification(ETextJustify::Center)
-						]
+						]*/
 				]
 		];
 
@@ -312,7 +317,49 @@ void FMinesweeperModule::ClearAllButtons()
 	GridVerticalBoxRoot->ClearChildren();
 }
 
-FReply FMinesweeperModule::OnMineButtonClicked(TSharedPtr<SButton> InButton)
+FReply  FMinesweeperModule::OnMineButtonClicked(FIntPoint InLocation)
+{
+	//// Has InButton?
+	//if (InButton)
+	//{
+	//	// Check if Valid InButton
+	//	if (GeneratedButtonIDs.Contains(InButton))
+	//	{
+	//		// Find out which location did user pressed
+	//		const FIntPoint tempClickedLocation = *GeneratedButtonIDs.Find(InButton);
+
+	//		// Check if clicked a mine? 
+	//		if (MinesMap.Contains(tempClickedLocation))
+	//		{
+	//			// Lose Game
+	//			LoseGameMain();
+	//		}
+	//	}
+	//}
+	//else
+	//{
+	//	FText DialogText = FText::FromString(TEXT("Invalid InButton!"));
+
+	//	FMessageDialog::Open(EAppMsgType::Ok, DialogText);
+	//}
+
+	//FText DialogText = FText::FromString(TEXT("Invalid InButton!"));
+
+	FText temp1;
+	temp1 = FText::FromString(FString::SanitizeFloat(InLocation.X));
+
+	/*FText DialogText = FText::Format(
+		LOCTEXT("PluginButtonDialogText", "InLocation: {0} in {1} to override this button's actions"),
+		InLocation.X,
+		InLocation.Y
+						   );*/
+
+	FMessageDialog::Open(EAppMsgType::Ok, temp1);
+
+	return FReply::Handled();
+}
+
+FReply FMinesweeperModule::OnMineButtonClicked_BACKUP(TSharedPtr<SButton> InButton)
 {
 	// Has InButton?
 	if (InButton)
@@ -340,6 +387,7 @@ FReply FMinesweeperModule::OnMineButtonClicked(TSharedPtr<SButton> InButton)
 
 	return FReply::Handled();
 }
+
 
 TArray<FIntPoint> FMinesweeperModule::GenerateMinesMapMain(int InWidth, int InHeight, int InMines)
 {

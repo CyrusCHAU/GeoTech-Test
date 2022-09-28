@@ -4,7 +4,8 @@
 		"Module.Minesweeper.cpp.obj": [
 			"MinesweeperCommands.cpp.obj",
 			"MinesweeperStyle.cpp.obj",
-			"Minesweeper.cpp.obj"
+			"Minesweeper.cpp.obj",
+			"SMinesWidget.cpp.obj"
 		]
 	}
 }

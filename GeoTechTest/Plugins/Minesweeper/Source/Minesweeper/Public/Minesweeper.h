@@ -6,6 +6,7 @@
 #include "Modules/ModuleManager.h"
 #include "Editor/MainFrame/Public/Interfaces/IMainFrameModule.h"
 #include "Widgets/Input/SSpinBox.h"
+#include "SMinesWidget.h"
 
 class FToolBarBuilder;
 class FMenuBuilder;
@@ -69,13 +70,14 @@ private:
 	void GenerateGridMain(int InWidth, int InHeight, int InMines);
 
 	/** Add a grid button. For internal use only. */
-	TSharedPtr<SButton> AddGridButtonCore(TSharedPtr<SHorizontalBox> InHorizontalBox);
+	TSharedPtr<SButton> AddGridButtonCore(TSharedPtr<SHorizontalBox> InHorizontalBox, FIntPoint InLocation);
 
 	/** Empty all grid & buttons. */
 	void ClearAllButtons();
 
 	/** Called when user click a grid button during finding a mine. */
-	FReply OnMineButtonClicked(TSharedPtr<SButton> InButton);
+	FReply OnMineButtonClicked(FIntPoint InLocation);
+	FReply OnMineButtonClicked_BACKUP(TSharedPtr<SButton> InButton);
 
 	/** Generate a new Mines Map, which returns a FVector2D. */
 	TArray<FIntPoint> GenerateMinesMapMain(int InWidth, int InHeight, int InMines);

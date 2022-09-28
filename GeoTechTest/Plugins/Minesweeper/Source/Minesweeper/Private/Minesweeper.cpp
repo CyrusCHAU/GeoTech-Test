@@ -263,7 +263,7 @@ void FMinesweeperModule::GenerateGridMain(int InWidth, int InHeight, int InMines
 			for (int w = 0; w < InWidth; w++)
 			{
 				FIntPoint tempLocation = FIntPoint(h, w);
-				GeneratedButtonIDs.Add(AddGridButtonCore(tempHorizontalBox, tempLocation), tempLocation);
+				//GeneratedButtonIDs.Add(tempLocation, AddGridButtonCore(tempHorizontalBox, tempLocation));
 			}
 		}
 
@@ -279,7 +279,7 @@ void FMinesweeperModule::GenerateGridMain(int InWidth, int InHeight, int InMines
 TSharedPtr<SButton> FMinesweeperModule::AddGridButtonCore(TSharedPtr<SHorizontalBox> InHorizontalBox, FIntPoint InLocation)
 {
 	// Temp Spawned Button
-	TSharedPtr<SButton> tempButton;
+	TSharedPtr<SButton> tempWidget;
 
 	// Add Slot, Button, Button's Label
 	InHorizontalBox->AddSlot()
@@ -289,29 +289,19 @@ TSharedPtr<SButton> FMinesweeperModule::AddGridButtonCore(TSharedPtr<SHorizontal
 				.WidthOverride(ButtonSize_Width)
 				.HeightOverride(ButtonSize_Height)
 				[
-					SNew(SMinesWidget)
-						//.OwnRoot(this->Cr)
-						.MinesLocation(InLocation)
-						.OnClicked_Raw(this, &FMinesweeperModule::OnMineButtonClicked)
-					/*SAssignNew(tempButton, SButton)
-						.HAlign(HAlign_Center)
-						.VAlign(VAlign_Center)
-						.OnClicked_Raw(this, &FMinesweeperModule::OnMineButtonClicked, tempButton)
-						[
-							SNew(STextBlock)
-								.Text(FText::FromString(TEXT("[  ]")))
-								.Justification(ETextJustify::Center)
-						]*/
+					SNew(SMinesWidget) //SAssignNew(tempWidget, SMinesWidget)
+						.MinesLocation(InLocation) // Give its Location Info
+						.OnClicked_Raw(this, &FMinesweeperModule::OnMineButtonClicked) // Bind Delegate
 				]
 		];
 
-	return tempButton;
+	return tempWidget;
 }
 
 void FMinesweeperModule::ClearAllButtons()
 {
 	// Clear Stored Buttons
-	GeneratedButtonIDs.Empty();
+	//GeneratedButtonIDs.Empty();
 
 	// Remove All Childs
 	GridVerticalBoxRoot->ClearChildren();
@@ -343,24 +333,52 @@ FReply  FMinesweeperModule::OnMineButtonClicked(FIntPoint InLocation)
 	//	FMessageDialog::Open(EAppMsgType::Ok, DialogText);
 	//}
 
-	//FText DialogText = FText::FromString(TEXT("Invalid InButton!"));
 
-	FText temp1;
-	temp1 = FText::FromString(FString::SanitizeFloat(InLocation.X));
 
-	/*FText DialogText = FText::Format(
-		LOCTEXT("PluginButtonDialogText", "InLocation: {0} in {1} to override this button's actions"),
+	FText DialogText = FText::Format(
+		LOCTEXT("PluginButtonDialogText", "InLocation: X: {0} & Y: {1}"),
 		InLocation.X,
 		InLocation.Y
-						   );*/
+	 );
 
-	FMessageDialog::Open(EAppMsgType::Ok, temp1);
+
+	FMessageDialog::Open(EAppMsgType::Ok, DialogText);
+
+	 //Check if clicked a mine? 
+	if (MinesMap.Contains(InLocation))
+	{
+		// Lose Game
+		LoseGameMain();
+	}
+	else
+	{
+		// Still have empty grid?
+		if (OpenedMap.Num() < ((GridWidth * GridHeight) - GridMines))
+		{
+			// Add record of user's opened location
+			OpenedMap.Add(InLocation);
+
+			// Get the related button
+			//TSharedPtr<SMinesWidget>* tempRelatedWidget = GeneratedButtonIDs.Find(InLocation);
+
+			// Change it style to show it is "Empty" to user
+			//tempRelatedWidget->Get()->DisplayEmptyStyle();
+		}
+		// No empty grid, Win the Game!
+		else
+		{
+			
+		}
+	}
+
+
 
 	return FReply::Handled();
 }
 
 FReply FMinesweeperModule::OnMineButtonClicked_BACKUP(TSharedPtr<SButton> InButton)
 {
+/*
 	// Has InButton?
 	if (InButton)
 	{
@@ -384,6 +402,7 @@ FReply FMinesweeperModule::OnMineButtonClicked_BACKUP(TSharedPtr<SButton> InButt
 
 		FMessageDialog::Open(EAppMsgType::Ok, DialogText);
 	}
+	*/
 
 	return FReply::Handled();
 }

@@ -43,3 +43,9 @@ FReply SMinesWidget::OnButtonClicked()
 
 	return FReply::Handled();
 }
+
+void SMinesWidget::DisplayEmptyStyle()
+{
+	MyButton->SetColorAndOpacity(FLinearColor(0, 1, 0));
+	MyLabel->SetText(FText::FromString( TEXT(":)")));
+}

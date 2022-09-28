@@ -43,7 +43,7 @@ private:
 	* Key: Button Pointer.
 	* Value: Location, start from 0. 
 	*/
-	TMap<TSharedPtr<SButton>, FIntPoint> GeneratedButtonIDs;
+	//TMap<FIntPoint, TSharedPtr<SMinesWidget>> GeneratedButtonIDs;
 	int ButtonSize_Width = 48;
 	int ButtonSize_Height = 48;
 
@@ -56,6 +56,7 @@ private:
 	int GridMines;
 
 	TArray<FIntPoint> MinesMap;
+	TArray<FIntPoint> OpenedMap;
 
 #pragma endregion
 

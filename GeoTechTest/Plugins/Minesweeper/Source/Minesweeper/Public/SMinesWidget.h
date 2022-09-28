@@ -19,7 +19,7 @@ public:
 #pragma region Slate Argument
 
 	SLATE_BEGIN_ARGS(SMinesWidget) 
-		: _OnClicked()
+		/*: _OnClicked()*/
 	{}
 	
 	/** Expose OnClicked to Slate Event. */
@@ -55,4 +55,6 @@ public:
 
 	/** Public delegate that other needs to bind.*/
 	FOnClickedSignature MyOnClickedAction;
+
+	void DisplayEmptyStyle();
 };

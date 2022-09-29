@@ -43,7 +43,7 @@ private:
 	* Key: Button Pointer.
 	* Value: Location, start from 0. 
 	*/
-	//TMap<FIntPoint, TSharedPtr<SMinesWidget>> GeneratedButtonIDs;
+	TMap<FIntPoint, TSharedPtr<SMinesWidget>> GeneratedButtonIDs;
 	int ButtonSize_Width = 48;
 	int ButtonSize_Height = 48;
 
@@ -77,7 +77,7 @@ private:
 	void GenerateGridMain(int InWidth, int InHeight, int InMines);
 
 	/** Add a grid button. For internal use only. */
-	TSharedPtr<SButton> AddGridButtonCore(TSharedPtr<SHorizontalBox> InHorizontalBox, FIntPoint InLocation);
+	TSharedPtr<SMinesWidget> AddGridButtonCore(TSharedPtr<SHorizontalBox> InHorizontalBox, FIntPoint InLocation);
 	//TSharedPtr<SMinesWidget> temp1(); // This ok
 
 	/** Empty all grid & buttons. */

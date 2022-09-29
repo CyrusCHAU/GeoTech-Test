@@ -301,10 +301,6 @@ TSharedPtr<SMinesWidget> FMinesweeperModule::AddGridButtonCore(TSharedPtr<SHoriz
 
 }
 
-//TSharedPtr<SMinesWidget> FMinesweeperModule::temp1()
-//{
-//	return TSharedPtr<SMinesWidget>();
-//}
 
 void FMinesweeperModule::ClearAllButtons()
 {
@@ -315,7 +311,7 @@ void FMinesweeperModule::ClearAllButtons()
 	GridVerticalBoxRoot->ClearChildren();
 }
 
-FReply  FMinesweeperModule::OnMineButtonClicked(FIntPoint InLocation)
+FReply  FMinesweeperModule::OnMineButtonClicked(FIntPoint InLocation, SMinesWidget* InWidget)
 {
 	//// Has InButton?
 	//if (InButton)

@@ -4,10 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Widgets/SCompoundWidget.h"
-#include "Minesweeper.h"
+//#include "Minesweeper.h"
 
-/** Declare a delegate for OnClicked */
-DECLARE_DELEGATE_RetVal_OneParam(FReply, FOnClickedSignature, FIntPoint);
+
 
 /**
  * 
@@ -15,6 +14,9 @@ DECLARE_DELEGATE_RetVal_OneParam(FReply, FOnClickedSignature, FIntPoint);
 class MINESWEEPER_API SMinesWidget : public SCompoundWidget
 {
 public:
+
+	/** Declare a delegate for OnClicked */
+	DECLARE_DELEGATE_RetVal_TwoParams(FReply, FOnClickedSignature, FIntPoint, SMinesWidget*);
 
 #pragma region Slate Argument
 

@@ -7,6 +7,7 @@
 #include "Widgets/Input/SSpinBox.h"
 #include "SMinesWidget.h"
 #include "Editor/MainFrame/Public/Interfaces/IMainFrameModule.h"
+#include "MinesweeperStyle.h"
 
 class FToolBarBuilder;
 class FMenuBuilder;
@@ -84,7 +85,7 @@ private:
 	void ClearAllButtons();
 
 	/** Called when user click a grid button during finding a mine. */
-	FReply OnMineButtonClicked(FIntPoint InLocation);
+	FReply OnMineButtonClicked(FIntPoint InLocation, SMinesWidget* InWidget);
 	FReply OnMineButtonClicked_BACKUP(TSharedPtr<SButton> InButton);
 
 	/** Generate a new Mines Map, which returns a FVector2D. */

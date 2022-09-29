@@ -33,7 +33,7 @@ FReply SMinesWidget::OnButtonClicked()
 	// Execute a delegate
 	if (MyOnClickedAction.IsBound())
 	{
-		MyOnClickedAction.Execute(MinesLocation);
+		MyOnClickedAction.Execute(MinesLocation, this);
 	}
 	else
 	{

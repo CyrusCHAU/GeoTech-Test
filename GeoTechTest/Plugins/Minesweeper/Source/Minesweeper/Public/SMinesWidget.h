@@ -58,7 +58,8 @@ public:
 
 	/** Show how many mines did it surround. */
 	void DisplayEmptyStyle();
-	//void DisplayStyle();
+
+	
 
 	void CheckEmptySpacesMain(FIntPoint InStartLocation);
 

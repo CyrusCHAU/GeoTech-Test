@@ -263,7 +263,7 @@ void FMinesweeperModule::GenerateGridMain(int InWidth, int InHeight, int InMines
 			for (int w = 0; w < InWidth; w++)
 			{
 				FIntPoint tempLocation = FIntPoint(h, w);
-				GeneratedButtonIDs.Add(tempLocation, AddGridButtonCore(tempHorizontalBox, tempLocation));
+				//GeneratedButtonIDs.Add(tempLocation, AddGridButtonCore(tempHorizontalBox, tempLocation));
 			}
 		}
 
@@ -276,7 +276,7 @@ void FMinesweeperModule::GenerateGridMain(int InWidth, int InHeight, int InMines
 	}
 }
 
-TSharedPtr<SMinesWidget> FMinesweeperModule::AddGridButtonCore(TSharedPtr<SHorizontalBox> InHorizontalBox, FIntPoint InLocation)
+TSharedPtr<SButton> FMinesweeperModule::AddGridButtonCore(TSharedPtr<SHorizontalBox> InHorizontalBox, FIntPoint InLocation)
 {
 	// Temp Spawned Button
 	TSharedPtr<SMinesWidget> tempWidget;
@@ -295,15 +295,16 @@ TSharedPtr<SMinesWidget> FMinesweeperModule::AddGridButtonCore(TSharedPtr<SHoriz
 				]
 		];
 
-	return tempWidget; // This OK
+	//return tempWidget; // This OK
 	//return TSharedPtr<SMinesWidget>(); // This ok
+	return TSharedPtr<SButton>(); // This ok
 
 }
 
-TSharedPtr<SMinesWidget> FMinesweeperModule::temp1()
-{
-	return TSharedPtr<SMinesWidget>();
-}
+//TSharedPtr<SMinesWidget> FMinesweeperModule::temp1()
+//{
+//	return TSharedPtr<SMinesWidget>();
+//}
 
 void FMinesweeperModule::ClearAllButtons()
 {
@@ -366,10 +367,10 @@ FReply  FMinesweeperModule::OnMineButtonClicked(FIntPoint InLocation)
 			OpenedMap.Add(InLocation);
 
 			// Get the related button
-			TSharedPtr<SMinesWidget>* tempRelatedWidget = GeneratedButtonIDs.Find(InLocation);
+			//TSharedPtr<SMinesWidget>* tempRelatedWidget = GeneratedButtonIDs.Find(InLocation);
 
 			// Change it style to show it is "Empty" to user
-			tempRelatedWidget->Get()->DisplayEmptyStyle();
+			//tempRelatedWidget->Get()->DisplayEmptyStyle();
 		}
 		// No empty grid, Win the Game!
 		else

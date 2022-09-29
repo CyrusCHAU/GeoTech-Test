@@ -4,9 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
-#include "Editor/MainFrame/Public/Interfaces/IMainFrameModule.h"
 #include "Widgets/Input/SSpinBox.h"
 #include "SMinesWidget.h"
+#include "Editor/MainFrame/Public/Interfaces/IMainFrameModule.h"
 
 class FToolBarBuilder;
 class FMenuBuilder;
@@ -43,8 +43,7 @@ private:
 	* Key: Button Pointer.
 	* Value: Location, start from 0. 
 	*/
-	TMap<FIntPoint, TSharedPtr<SMinesWidget>> GeneratedButtonIDs;
-	//TMap<FIntPoint, TSharedPtr<SMinesWidget>> tempSlot;
+	//TMap<FIntPoint, TSharedPtr<SMinesWidget>> GeneratedButtonIDs;
 	int ButtonSize_Width = 48;
 	int ButtonSize_Height = 48;
 
@@ -56,8 +55,14 @@ private:
 	int GridHeight;
 	int GridMines;
 
+	/** The mines location. */
 	TArray<FIntPoint> MinesMap;
+
+	/** The discovered location. */
 	TArray<FIntPoint> OpenedMap;
+
+	/** The pre-calculate map that already shows the each grid how many mines they surround. */
+	TMap<FIntPoint, int> NumberOfMinesSurroundMap;
 
 #pragma endregion
 
@@ -72,8 +77,8 @@ private:
 	void GenerateGridMain(int InWidth, int InHeight, int InMines);
 
 	/** Add a grid button. For internal use only. */
-	TSharedPtr<SMinesWidget> AddGridButtonCore(TSharedPtr<SHorizontalBox> InHorizontalBox, FIntPoint InLocation);
-	TSharedPtr<SMinesWidget> temp1(); // This ok
+	TSharedPtr<SButton> AddGridButtonCore(TSharedPtr<SHorizontalBox> InHorizontalBox, FIntPoint InLocation);
+	//TSharedPtr<SMinesWidget> temp1(); // This ok
 
 	/** Empty all grid & buttons. */
 	void ClearAllButtons();

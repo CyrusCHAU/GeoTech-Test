@@ -46,6 +46,19 @@ FReply SMinesWidget::OnButtonClicked()
 
 void SMinesWidget::DisplayEmptyStyle()
 {
+	// Change text color
 	MyButton->SetColorAndOpacity(FLinearColor(0, 1, 0));
+
+	// Calculate how many mines surround
 	MyLabel->SetText(FText::FromString( TEXT(":)")));
+}
+
+void SMinesWidget::CheckEmptySpacesMain(FIntPoint InStartLocation)
+{
+	CheckGridCore(InStartLocation);
+}
+
+int SMinesWidget::CheckGridCore(FIntPoint InLocation)
+{
+	return 0;
 }

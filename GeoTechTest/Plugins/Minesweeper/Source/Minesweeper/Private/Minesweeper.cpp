@@ -263,7 +263,7 @@ void FMinesweeperModule::GenerateGridMain(int InWidth, int InHeight, int InMines
 			for (int w = 0; w < InWidth; w++)
 			{
 				FIntPoint tempLocation = FIntPoint(h, w);
-				//GeneratedButtonIDs.Add(tempLocation, AddGridButtonCore(tempHorizontalBox, tempLocation));
+				GeneratedButtonIDs.Add(tempLocation, AddGridButtonCore(tempHorizontalBox, tempLocation));
 			}
 		}
 
@@ -276,10 +276,10 @@ void FMinesweeperModule::GenerateGridMain(int InWidth, int InHeight, int InMines
 	}
 }
 
-TSharedPtr<SButton> FMinesweeperModule::AddGridButtonCore(TSharedPtr<SHorizontalBox> InHorizontalBox, FIntPoint InLocation)
+TSharedPtr<SMinesWidget> FMinesweeperModule::AddGridButtonCore(TSharedPtr<SHorizontalBox> InHorizontalBox, FIntPoint InLocation)
 {
 	// Temp Spawned Button
-	TSharedPtr<SButton> tempWidget;
+	TSharedPtr<SMinesWidget> tempWidget;
 
 	// Add Slot, Button, Button's Label
 	InHorizontalBox->AddSlot()
@@ -289,13 +289,20 @@ TSharedPtr<SButton> FMinesweeperModule::AddGridButtonCore(TSharedPtr<SHorizontal
 				.WidthOverride(ButtonSize_Width)
 				.HeightOverride(ButtonSize_Height)
 				[
-					SNew(SMinesWidget) //SAssignNew(tempWidget, SMinesWidget)
+					SAssignNew(tempWidget, SMinesWidget) //SAssignNew(tempWidget, SMinesWidget)
 						.MinesLocation(InLocation) // Give its Location Info
 						.OnClicked_Raw(this, &FMinesweeperModule::OnMineButtonClicked) // Bind Delegate
 				]
 		];
 
-	return tempWidget;
+	return tempWidget; // This OK
+	//return TSharedPtr<SMinesWidget>(); // This ok
+
+}
+
+TSharedPtr<SMinesWidget> FMinesweeperModule::temp1()
+{
+	return TSharedPtr<SMinesWidget>();
 }
 
 void FMinesweeperModule::ClearAllButtons()

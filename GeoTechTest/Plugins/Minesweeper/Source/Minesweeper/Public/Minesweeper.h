@@ -41,7 +41,7 @@ private:
 	TSharedPtr<SVerticalBox> GridVerticalBoxRoot;
 
 	/** 
-	* Key: Button Pointer.
+	* Key: The location stored in (Y, X) or (H, W).
 	* Value: Location, start from 0. 
 	*/
 	TMap<FIntPoint, TSharedPtr<SMinesWidget>> GeneratedButtonIDs;
@@ -56,13 +56,16 @@ private:
 	int GridHeight;
 	int GridMines;
 
-	/** The mines location. */
+	/** The mines location. The location stored in (Y, X) or (H, W). */
 	TArray<FIntPoint> MinesMap;
 
-	/** The discovered location. */
+	/** The discovered location. The location stored in (Y, X) or (H, W). */
 	TArray<FIntPoint> OpenedMap;
 
-	/** The pre-calculate map that already shows the each grid how many mines they surround. */
+	/** 
+	* The pre-calculate map that already shows the each grid how many mines they surround. 
+	* The location stored in (Y, X) or (H, W).
+	*/
 	TMap<FIntPoint, int> NumberOfMinesSurroundMap;
 
 #pragma endregion
@@ -77,7 +80,10 @@ private:
 	/** Main action to generate a new grid. */
 	void GenerateGridMain(int InWidth, int InHeight, int InMines);
 
-	/** Add a grid button. For internal use only. */
+	/** 
+	* Add a grid button. For internal use only. 
+	* The location stored in (Y, X) pr (H, W).
+	*/
 	TSharedPtr<SMinesWidget> AddGridButtonCore(TSharedPtr<SHorizontalBox> InHorizontalBox, FIntPoint InLocation);
 	//TSharedPtr<SMinesWidget> temp1(); // This ok
 
@@ -86,15 +92,26 @@ private:
 
 	/** Called when user click a grid button during finding a mine. */
 	FReply OnMineButtonClicked(FIntPoint InLocation, SMinesWidget* InWidget);
-	FReply OnMineButtonClicked_BACKUP(TSharedPtr<SButton> InButton);
 
-	/** Generate a new Mines Map, which returns a FVector2D. */
+	/** 
+	* Generate a new Mines Map, which returns a FVector2D. 
+	* The location stored in (Y, X) or (H, W).
+	*/
 	TArray<FIntPoint> GenerateMinesMapMain(int InWidth, int InHeight, int InMines);
+
+	/** Calculate a number of mines surround for each grid. -1 is mines.*/
+	TMap<FIntPoint, int> CalculateNumberOfMinesMap(int InWidth, int InHeight);
+
+	/** Check if the location is a mines. */
+	bool CheckIsMines(FIntPoint InLocaion);
 
 	/** Action for a lose game. */
 	void LoseGameMain();
 	
 #pragma endregion
 
+	void Debug_LogFIntPoint(TArray<FIntPoint> InArray, FString InPrefix = "");
+
+	void Debug_LogFIntPointInt(TMap<FIntPoint, int> InMap, FString InPrefix = "");
 
 };

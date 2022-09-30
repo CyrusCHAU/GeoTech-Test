@@ -61,7 +61,10 @@ public:
 	/** Show how many mines did it surround. */
 	void DisplayEmptyStyle();
 
-	
+	void DisplayNumberStyle(int InNumber);
+
+	void DisplayMinesStyle();
+
 
 	void CheckEmptySpacesMain(FIntPoint InStartLocation);
 

@@ -212,32 +212,6 @@ FReply FMinesweeperModule::OnGenerateGridButtonClicked()
 
 void FMinesweeperModule::GenerateGridMain(int InWidth, int InHeight, int InMines)
 {
-	//GridRoot + SVerticalBox::Slot();
-	//GridRoot->AddSlot().AttachWidget(Input_GenerateGridLabel);
-
-	/** This can be compiled, but didn't show up
-	auto temp1 = GridRoot->AddSlot();
-	temp1
-		[
-			SNew(SButton)
-		];
-	*/
-
-	//// Add Vertical Box Slot
-	//GridVerticalBoxRoot->AddSlot()
-	//	.HAlign(HAlign_Fill)
-	//	.VAlign(VAlign_Center)
-	//	[
-	//		SNew(SButton)
-	//		//.AddMetaData()
-	//		//.OnClicked_Raw()
-	//		[
-	//			SNew(STextBlock)
-	//			.Text(FText::FromString(TEXT("Generate New Grid")))
-	//			.Justification(ETextJustify::Center)
-	//		]
-	//	];
-
 	// Check Conditions. Only play when number of mines is smaller than the total grid size.
 	if (InMines < InWidth * InHeight)
 	{
@@ -262,13 +236,24 @@ void FMinesweeperModule::GenerateGridMain(int InWidth, int InHeight, int InMines
 			// Width, Column
 			for (int w = 0; w < InWidth; w++)
 			{
-				FIntPoint tempLocation = FIntPoint(h, w);
+				FIntPoint tempLocation = FIntPoint(h, w); // This is (Y, X)
 				GeneratedButtonIDs.Add(tempLocation, AddGridButtonCore(tempHorizontalBox, tempLocation));
+
+				// This is OK in GeneratedButtonIDs
+				/*TArray<FIntPoint> tempKeys;
+				GeneratedButtonIDs.GetKeys(tempKeys);
+				Debug_LogFIntPoint(tempKeys, "P1: New added to GeneratedButtonIDs");*/ 
 			}
 		}
 
 		// Spawn Mines Map
 		MinesMap = GenerateMinesMapMain(InWidth, InHeight, InMines);
+		Debug_LogFIntPoint(MinesMap, "MinesMap: ");
+
+		// Calculate number of mines in each grid
+		NumberOfMinesSurroundMap = CalculateNumberOfMinesMap(InWidth, InHeight);
+		Debug_LogFIntPointInt(NumberOfMinesSurroundMap);
+
 	} 
 	else
 	{
@@ -276,6 +261,7 @@ void FMinesweeperModule::GenerateGridMain(int InWidth, int InHeight, int InMines
 	}
 }
 
+// The location stored in(Y, X) pr(H, W).
 TSharedPtr<SMinesWidget> FMinesweeperModule::AddGridButtonCore(TSharedPtr<SHorizontalBox> InHorizontalBox, FIntPoint InLocation)
 {
 	// Temp Spawned Button
@@ -305,7 +291,7 @@ TSharedPtr<SMinesWidget> FMinesweeperModule::AddGridButtonCore(TSharedPtr<SHoriz
 void FMinesweeperModule::ClearAllButtons()
 {
 	// Clear Stored Buttons
-	//GeneratedButtonIDs.Empty();
+	GeneratedButtonIDs.Empty();
 
 	// Remove All Childs
 	GridVerticalBoxRoot->ClearChildren();
@@ -313,43 +299,33 @@ void FMinesweeperModule::ClearAllButtons()
 
 FReply  FMinesweeperModule::OnMineButtonClicked(FIntPoint InLocation, SMinesWidget* InWidget)
 {
-	//// Has InButton?
-	//if (InButton)
-	//{
-	//	// Check if Valid InButton
-	//	if (GeneratedButtonIDs.Contains(InButton))
-	//	{
-	//		// Find out which location did user pressed
-	//		const FIntPoint tempClickedLocation = *GeneratedButtonIDs.Find(InButton);
-
-	//		// Check if clicked a mine? 
-	//		if (MinesMap.Contains(tempClickedLocation))
-	//		{
-	//			// Lose Game
-	//			LoseGameMain();
-	//		}
-	//	}
-	//}
-	//else
-	//{
-	//	FText DialogText = FText::FromString(TEXT("Invalid InButton!"));
-
-	//	FMessageDialog::Open(EAppMsgType::Ok, DialogText);
-	//}
-
+	FString tempDebug1;
+	for (auto it : NumberOfMinesSurroundMap)
+	{
+		tempDebug1 += "[";
+		tempDebug1 += FString::FromInt(it.Key.X);
+		tempDebug1 += ",";
+		tempDebug1 += FString::FromInt(it.Key.Y);
+		tempDebug1 += ":";
+		tempDebug1 += FString::FromInt(it.Value);
+		tempDebug1 += "]";
+	}
+	FText tempDebug2 = FText::FromString(tempDebug1);
+	FMessageDialog::Open(EAppMsgType::Ok, tempDebug2);
 
 
 	FText DialogText = FText::Format(
-		LOCTEXT("PluginButtonDialogText", "InLocation: X: {0} & Y: {1}"),
+		LOCTEXT("PluginButtonDialogText", "InLocation: Y: {0} & X: {1}. Number: {2}."),
+		InLocation.Y,
 		InLocation.X,
-		InLocation.Y
+		*NumberOfMinesSurroundMap.Find(InLocation)
 	 );
 
 
 	FMessageDialog::Open(EAppMsgType::Ok, DialogText);
 
 	 //Check if clicked a mine? 
-	if (MinesMap.Contains(InLocation))
+	if (CheckIsMines(InLocation)) //MinesMap.Contains(InLocation)
 	{
 		// Lose Game
 		LoseGameMain();
@@ -362,11 +338,18 @@ FReply  FMinesweeperModule::OnMineButtonClicked(FIntPoint InLocation, SMinesWidg
 			// Add record of user's opened location
 			OpenedMap.Add(InLocation);
 
-			// Get the related button
-			TSharedPtr<SMinesWidget>* tempRelatedWidget = GeneratedButtonIDs.Find(InLocation);
+			// Pressing the number
+			if (NumberOfMinesSurroundMap.Find(InLocation) != 0)
+			{
+				auto temp1 = NumberOfMinesSurroundMap.Find(InLocation);
+				InWidget->DisplayNumberStyle(*NumberOfMinesSurroundMap.Find(InLocation));
+			}
+			// Pressing the empty
+			else
+			{
+				InWidget->DisplayEmptyStyle();
+			}
 
-			// Change it style to show it is "Empty" to user
-			tempRelatedWidget->Get()->DisplayEmptyStyle();
 		}
 		// No empty grid, Win the Game!
 		else
@@ -380,36 +363,6 @@ FReply  FMinesweeperModule::OnMineButtonClicked(FIntPoint InLocation, SMinesWidg
 	return FReply::Handled();
 }
 
-FReply FMinesweeperModule::OnMineButtonClicked_BACKUP(TSharedPtr<SButton> InButton)
-{
-/*
-	// Has InButton?
-	if (InButton)
-	{
-		// Check if Valid InButton
-		if (GeneratedButtonIDs.Contains(InButton))
-		{
-			// Find out which location did user pressed
-			const FIntPoint tempClickedLocation = *GeneratedButtonIDs.Find(InButton);
-
-			// Check if clicked a mine? 
-			if (MinesMap.Contains(tempClickedLocation))
-			{
-				// Lose Game
-				LoseGameMain();
-			}
-		}
-	}
-	else
-	{
-		FText DialogText = FText::FromString(TEXT("Invalid InButton!"));
-
-		FMessageDialog::Open(EAppMsgType::Ok, DialogText);
-	}
-	*/
-
-	return FReply::Handled();
-}
 
 
 TArray<FIntPoint> FMinesweeperModule::GenerateMinesMapMain(int InWidth, int InHeight, int InMines)
@@ -425,13 +378,135 @@ TArray<FIntPoint> FMinesweeperModule::GenerateMinesMapMain(int InWidth, int InHe
 		int tempH = FMath::RandHelper(InHeight - 1);
 
 		// Only accept when there is no same mine location
-		if (!tempMinesLocations.Contains(FIntPoint(tempW, tempH)))
+		if (!tempMinesLocations.Contains(FIntPoint(tempH, tempW)))
 		{
-			tempMinesLocations.Add(FIntPoint(tempW, tempH));
+			tempMinesLocations.Add(FIntPoint(tempH, tempW));
 		}
 	}
 
 	return tempMinesLocations;
+}
+
+TMap<FIntPoint, int> FMinesweeperModule::CalculateNumberOfMinesMap(int InWidth, int InHeight)
+{
+	// Local Map
+	TMap<FIntPoint, int>* tempMap = new TMap<FIntPoint, int>();
+
+	//for (int h = 0; h < InHeight; h++)
+	//{
+	//	for (int w = 0; w < InWidth; w++)
+	//	{
+	//		if (MinesMap.Contains((h, w)))
+	//		{
+	//			tempMap.Add((h, w), -1);
+
+	//			Debug_LogFIntPointInt(tempMap, "Contains Mines in this location");
+	//			//continue;
+	//		}
+	//		else
+	//		{
+	//			// Store local number
+	//			int tempNumber = 0;
+
+	//			// Check near 8 spaces
+	//			TArray<FIntPoint> tempNeighbor;
+	//			tempNeighbor.Add((h - 1, w - 1));
+	//			tempNeighbor.Add((h - 1, w    ));
+	//			tempNeighbor.Add((h - 1, w + 1));
+	//			tempNeighbor.Add((h    , w - 1));
+	//			tempNeighbor.Add((h    , w + 1));
+	//			tempNeighbor.Add((h + 1, w - 1));
+	//			tempNeighbor.Add((h + 1, w    ));
+	//			tempNeighbor.Add((h + 1, w + 1));
+	//			
+	//			for (FIntPoint tempLoc : tempNeighbor)
+	//			{
+	//				if (CheckIsMines(tempLoc))
+	//				{
+	//					tempNumber += 1;
+	//				} 
+	//			}
+	//			
+	//			tempMap.Add((h, w), tempNumber);
+
+	//			Debug_LogFIntPointInt(tempMap, "No Mines in this location");
+	//		}
+	//	}
+	//}
+
+	TArray<FIntPoint> tempArray;
+	GeneratedButtonIDs.GetKeys(tempArray);
+	Debug_LogFIntPoint(tempArray, "New Array for Looping");
+
+	for (FIntPoint it : tempArray)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Current it: %d, %d"), it.X, it.Y);
+
+		if (MinesMap.Contains((it.X, it.Y)))
+		{
+			FIntPoint tempGridOP = FIntPoint(it.X, it.Y);
+			tempMap->Add(tempGridOP, -1);
+
+			Debug_LogFIntPointInt(*tempMap, "Contains Mines in this location:");
+			//continue;
+		}
+		else
+		{
+			// Local it
+			int tempIT_X = it.X;	
+			int tempIT_Y = it.Y;
+			
+			// Store local number
+			int tempNumber = 0;
+
+			// Check near 8 spaces
+			TArray<FIntPoint>* tempNeighbor = new TArray<FIntPoint>;
+			int tempLeft = tempIT_X - 1;
+			int tempRight = tempIT_X + 1;
+			int tempUp = tempIT_Y - 1;
+			int tempDown = tempIT_Y + 1;
+
+			FIntPoint tempGrid0 = FIntPoint(tempLeft, tempUp);
+			FIntPoint tempGrid1 = FIntPoint(tempIT_X, tempUp);
+			FIntPoint tempGrid2 = FIntPoint(tempRight, tempUp);
+			FIntPoint tempGrid4 = FIntPoint(tempLeft, tempIT_Y);
+			FIntPoint tempGrid5 = FIntPoint(tempRight, tempIT_Y);
+			FIntPoint tempGrid6 = FIntPoint(tempLeft, tempDown);
+			FIntPoint tempGrid7 = FIntPoint(tempIT_X, tempDown);
+			FIntPoint tempGrid8 = FIntPoint(tempRight, tempDown);
+			tempNeighbor->Add(tempGrid0);
+			tempNeighbor->Add(tempGrid1);
+			tempNeighbor->Add(tempGrid2);
+			tempNeighbor->Add(tempGrid4);
+			tempNeighbor->Add(tempGrid5);
+			tempNeighbor->Add(tempGrid6);
+			tempNeighbor->Add(tempGrid7);
+			tempNeighbor->Add(tempGrid8);
+
+			Debug_LogFIntPoint(*tempNeighbor, "TempNeighbor");
+
+			for (FIntPoint tempLoc : *tempNeighbor)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Current Looping Neighbor: %d, %d"), tempLoc.X, tempLoc.Y);
+
+				if (CheckIsMines(tempLoc))
+				{
+					tempNumber += 1;
+				}
+			}
+
+			FIntPoint tempGridOP = FIntPoint(tempIT_X, tempIT_Y);
+			tempMap->Add(tempGridOP, tempNumber);
+
+			Debug_LogFIntPointInt(*tempMap, "No Mines in this location");
+		}
+	}
+	return *tempMap;
+}
+
+bool FMinesweeperModule::CheckIsMines(FIntPoint InLocaion)
+{
+	return MinesMap.Contains(InLocaion);
 }
 
 void FMinesweeperModule::LoseGameMain()
@@ -439,6 +514,48 @@ void FMinesweeperModule::LoseGameMain()
 	FText DialogText = FText::FromString(TEXT("You Clicked a Mine! Press \"OK\" to play again!"));
 
 	FMessageDialog::Open(EAppMsgType::Ok, DialogText);
+}
+
+void FMinesweeperModule::Debug_LogFIntPoint(TArray<FIntPoint> InArray, FString InPrefix)
+{
+	FString tempDebug1;
+
+	tempDebug1 += InPrefix;
+
+	for (auto it : InArray)
+	{
+		tempDebug1 += "[";
+		tempDebug1 += FString::FromInt(it.X);
+		tempDebug1 += ",";
+		tempDebug1 += FString::FromInt(it.Y);
+		tempDebug1 += "]";
+	}
+	FText tempDebug2 = FText::FromString(tempDebug1);
+	FMessageDialog::Open(EAppMsgType::Ok, tempDebug2);
+	//UE_LOG(LogTemp, Display, tempDebug1);
+
+}
+
+void FMinesweeperModule::Debug_LogFIntPointInt(TMap<FIntPoint, int> InMap, FString InPrefix)
+{
+	FString tempDebug1;
+
+	tempDebug1 += InPrefix;
+
+	for (auto it : InMap)
+	{
+		tempDebug1 += "[";
+		tempDebug1 += FString::FromInt(it.Key.X);
+		tempDebug1 += ",";
+		tempDebug1 += FString::FromInt(it.Key.Y);
+		tempDebug1 += ":";
+		tempDebug1 += FString::FromInt(it.Value);
+		tempDebug1 += "]";
+	}
+	FText tempDebug2 = FText::FromString(tempDebug1);
+	FMessageDialog::Open(EAppMsgType::Ok, tempDebug2);
+	//UE_LOG(LogTemp, Display, tempDebug1);
+
 }
 
 

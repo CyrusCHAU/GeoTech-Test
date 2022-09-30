@@ -49,8 +49,27 @@ void SMinesWidget::DisplayEmptyStyle()
 	// Change text color
 	MyButton->SetColorAndOpacity(FLinearColor(0, 1, 0));
 
-	// Calculate how many mines surround
-	MyLabel->SetText(FText::FromString( TEXT(":)")));
+	// show empty text
+	MyLabel->SetText(FText::FromString( TEXT("^.^")));
+}
+
+void SMinesWidget::DisplayNumberStyle(int InNumber)
+{
+	// Change text color
+	//FLinearColor tempColor = (InNumber == 1) ? FLinearColor(0, 0, 1) : (InNumber == 2) ? FLinearColor(0, 1, .3) : FLinearColor(1, 0, 0);
+	MyButton->SetColorAndOpacity(FLinearColor(1, 1, 0));
+
+	// Show number
+	MyLabel->SetText(FText::FromString(FString::FromInt(InNumber)));
+}
+
+void SMinesWidget::DisplayMinesStyle()
+{
+	// Change text color
+	MyButton->SetColorAndOpacity(FLinearColor(1, 0, 0));
+
+	// Show mines text
+	MyLabel->SetText(FText::FromString(TEXT("X")));
 }
 
 void SMinesWidget::CheckEmptySpacesMain(FIntPoint InStartLocation)

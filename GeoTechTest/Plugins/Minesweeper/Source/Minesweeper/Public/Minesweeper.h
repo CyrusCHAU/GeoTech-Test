@@ -41,7 +41,7 @@ private:
 	TSharedPtr<SVerticalBox> GridVerticalBoxRoot;
 
 	/** 
-	* Key: The location stored in (Y, X) or (H, W).
+	* Key: The location stored in (X, Y).
 	* Value: Location, start from 0. 
 	*/
 	TMap<FIntPoint, TSharedPtr<SMinesWidget>> GeneratedButtonIDs;
@@ -56,15 +56,15 @@ private:
 	int GridHeight;
 	int GridMines;
 
-	/** The mines location. The location stored in (Y, X) or (H, W). */
+	/** The mines location. The location stored in (X, Y). */
 	TArray<FIntPoint> MinesMap;
 
-	/** The discovered location. The location stored in (Y, X) or (H, W). */
+	/** The discovered location. The location stored in (X, Y). */
 	TArray<FIntPoint> OpenedMap;
 
 	/** 
 	* The pre-calculate map that already shows the each grid how many mines they surround. 
-	* The location stored in (Y, X) or (H, W).
+	* The location stored in (X, Y).
 	*/
 	TMap<FIntPoint, int> NumberOfMinesSurroundMap;
 
@@ -82,7 +82,7 @@ private:
 
 	/** 
 	* Add a grid button. For internal use only. 
-	* The location stored in (Y, X) pr (H, W).
+	* The location stored in (X, Y).
 	*/
 	TSharedPtr<SMinesWidget> AddGridButtonCore(TSharedPtr<SHorizontalBox> InHorizontalBox, FIntPoint InLocation);
 	//TSharedPtr<SMinesWidget> temp1(); // This ok
@@ -95,11 +95,11 @@ private:
 
 	/** 
 	* Generate a new Mines Map, which returns a FVector2D. 
-	* The location stored in (Y, X) or (H, W).
+	* The location stored in (X, Y).
 	*/
 	TArray<FIntPoint> GenerateMinesMapMain(int InWidth, int InHeight, int InMines);
 
-	/** Calculate a number of mines surround for each grid. -1 is mines.*/
+	/** Calculate a number of mines surround for each grid. -1 is mines.Store in (X, Y)*/
 	TMap<FIntPoint, int> CalculateNumberOfMinesMap(int InWidth, int InHeight);
 
 	/** Check if the location is a mines. */

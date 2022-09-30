@@ -236,7 +236,7 @@ void FMinesweeperModule::GenerateGridMain(int InWidth, int InHeight, int InMines
 			// Width, Column
 			for (int w = 0; w < InWidth; w++)
 			{
-				FIntPoint tempLocation = FIntPoint(h, w); // This is (Y, X)
+				FIntPoint tempLocation = FIntPoint(w, h); // This is (X, Y)
 				GeneratedButtonIDs.Add(tempLocation, AddGridButtonCore(tempHorizontalBox, tempLocation));
 
 				// This is OK in GeneratedButtonIDs
@@ -378,9 +378,9 @@ TArray<FIntPoint> FMinesweeperModule::GenerateMinesMapMain(int InWidth, int InHe
 		int tempH = FMath::RandHelper(InHeight - 1);
 
 		// Only accept when there is no same mine location
-		if (!tempMinesLocations.Contains(FIntPoint(tempH, tempW)))
+		if (!tempMinesLocations.Contains(FIntPoint(tempW, tempH)))
 		{
-			tempMinesLocations.Add(FIntPoint(tempH, tempW));
+			tempMinesLocations.Add(FIntPoint(tempW, tempH));
 		}
 	}
 
@@ -442,7 +442,7 @@ TMap<FIntPoint, int> FMinesweeperModule::CalculateNumberOfMinesMap(int InWidth, 
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Current it: %d, %d"), it.X, it.Y);
 
-		if (MinesMap.Contains((it.X, it.Y)))
+		if (CheckIsMines(it)) //MinesMap.Contains((it.X, it.Y)
 		{
 			FIntPoint tempGridOP = FIntPoint(it.X, it.Y);
 			tempMap->Add(tempGridOP, -1);

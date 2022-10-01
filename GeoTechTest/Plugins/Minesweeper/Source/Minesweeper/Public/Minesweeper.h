@@ -114,7 +114,7 @@ private:
 	void CheckEmptySpacesMain(FIntPoint InStartLocation);
 
 	/** Resurion. Only empty/near empty grid will enter this function. */
-	void CheckEmptySpaceCore(FIntPoint InLocation);
+	int CheckEmptySpaceCore(FIntPoint InLocation, int InCounter);
 	
 #pragma endregion
 

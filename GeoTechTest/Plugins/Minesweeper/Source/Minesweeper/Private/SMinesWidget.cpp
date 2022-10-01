@@ -71,13 +71,3 @@ void SMinesWidget::DisplayMinesStyle()
 	// Show mines text
 	MyLabel->SetText(FText::FromString(TEXT("X")));
 }
-
-void SMinesWidget::CheckEmptySpacesMain(FIntPoint InStartLocation)
-{
-	CheckGridCore(InStartLocation);
-}
-
-int SMinesWidget::CheckGridCore(FIntPoint InLocation)
-{
-	return 0;
-}

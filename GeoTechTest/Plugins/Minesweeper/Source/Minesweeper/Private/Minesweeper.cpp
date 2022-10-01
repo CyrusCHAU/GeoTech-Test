@@ -243,11 +243,11 @@ void FMinesweeperModule::GenerateGridMain(int InWidth, int InHeight, int InMines
 
 		// Spawn Mines Map
 		MinesMap = GenerateMinesMapMain(InWidth, InHeight, InMines);
-		Debug_LogFIntPoint(MinesMap, "MinesMap: ");
+		//Debug_LogFIntPoint(MinesMap, "MinesMap: ");
 
 		// Calculate number of mines in each grid
 		NumberOfMinesSurroundMap = CalculateNumberOfMinesMap();
-		Debug_LogFIntPointInt(NumberOfMinesSurroundMap);
+		//Debug_LogFIntPointInt(NumberOfMinesSurroundMap);
 
 	} 
 	else
@@ -294,31 +294,6 @@ void FMinesweeperModule::ClearAllButtons()
 
 FReply  FMinesweeperModule::OnMineButtonClicked(FIntPoint InLocation, SMinesWidget* InWidget)
 {
-	FString tempDebug1;
-	for (auto it : NumberOfMinesSurroundMap)
-	{
-		tempDebug1 += "[";
-		tempDebug1 += FString::FromInt(it.Key.X);
-		tempDebug1 += ",";
-		tempDebug1 += FString::FromInt(it.Key.Y);
-		tempDebug1 += ":";
-		tempDebug1 += FString::FromInt(it.Value);
-		tempDebug1 += "]";
-	}
-	FText tempDebug2 = FText::FromString(tempDebug1);
-	FMessageDialog::Open(EAppMsgType::Ok, tempDebug2);
-
-
-	FText DialogText = FText::Format(
-		LOCTEXT("PluginButtonDialogText", "InLocation: Y: {0} & X: {1}. Number: {2}."),
-		InLocation.Y,
-		InLocation.X,
-		*NumberOfMinesSurroundMap.Find(InLocation)
-	 );
-
-
-	FMessageDialog::Open(EAppMsgType::Ok, DialogText);
-
 	 //Check if clicked a mine? 
 	if (CheckIsMines(InLocation)) //MinesMap.Contains(InLocation)
 	{
@@ -334,17 +309,16 @@ FReply  FMinesweeperModule::OnMineButtonClicked(FIntPoint InLocation, SMinesWidg
 			OpenedMap.Add(InLocation);
 
 			// Pressing the number
-			if (NumberOfMinesSurroundMap.Find(InLocation) != 0)
+			if (*NumberOfMinesSurroundMap.Find(InLocation) != 0)
 			{
-				auto temp1 = NumberOfMinesSurroundMap.Find(InLocation);
 				InWidget->DisplayNumberStyle(*NumberOfMinesSurroundMap.Find(InLocation));
 			}
 			// Pressing the empty
 			else
 			{
-				InWidget->DisplayEmptyStyle();
+				CheckEmptySpacesMain(InLocation);
+				//InWidget->DisplayEmptyStyle();
 			}
-
 		}
 		// No empty grid, Win the Game!
 		else
@@ -369,8 +343,8 @@ TArray<FIntPoint> FMinesweeperModule::GenerateMinesMapMain(int InWidth, int InHe
 	while (tempMinesLocations.Num() < InMines)
 	{
 		// First random spawn a number first
-		int tempW = FMath::RandHelper(InWidth - 1);
-		int tempH = FMath::RandHelper(InHeight - 1);
+		int tempW = FMath::RandHelper(InWidth);
+		int tempH = FMath::RandHelper(InHeight);
 
 		// Only accept when there is no same mine location
 		if (!tempMinesLocations.Contains(FIntPoint(tempW, tempH)))
@@ -392,7 +366,7 @@ TMap<FIntPoint, int> FMinesweeperModule::CalculateNumberOfMinesMap()
 
 	for (FIntPoint it : tempArray)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Current it: %d, %d"), it.X, it.Y);
+		//UE_LOG(LogTemp, Warning, TEXT("Current it: %d, %d"), it.X, it.Y);
 
 		if (CheckIsMines(it)) //MinesMap.Contains((it.X, it.Y)
 		{
@@ -436,7 +410,7 @@ TMap<FIntPoint, int> FMinesweeperModule::CalculateNumberOfMinesMap()
 
 			for (FIntPoint tempLoc : *tempNeighbor)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("Current Looping Neighbor: %d, %d"), tempLoc.X, tempLoc.Y);
+				//UE_LOG(LogTemp, Warning, TEXT("Current Looping Neighbor: %d, %d"), tempLoc.X, tempLoc.Y);
 
 				if (CheckIsMines(tempLoc))
 				{
@@ -463,44 +437,164 @@ void FMinesweeperModule::LoseGameMain()
 	FMessageDialog::Open(EAppMsgType::Ok, DialogText);
 }
 
+void FMinesweeperModule::WinGameMain()
+{
+
+}
+
+void FMinesweeperModule::CheckEmptySpacesMain(FIntPoint InStartLocation)
+{
+	// Display as Empty style
+	TSharedPtr<SMinesWidget>* tempWidget = GeneratedButtonIDs.Find(InStartLocation);
+	tempWidget->Get()->DisplayEmptyStyle();
+
+	// Add to OpenedMap
+	//OpenedMap.Add(InStartLocation);
+
+	// Recursion
+	CheckEmptySpaceCore(InStartLocation);
+}
+
+void FMinesweeperModule::CheckEmptySpaceCore(FIntPoint InLocation)
+{
+	UE_LOG(LogTemp, Warning, TEXT("P1 Entry: Location: %d,%d."), InLocation.X, InLocation.Y);
+	//Debug_LogFIntPoint(OpenedMap, "P1 Before OpenedMap");
+
+	// Main Action: Display empty if it is.
+	if (NumberOfMinesSurroundMap.Contains(InLocation) && *NumberOfMinesSurroundMap.Find(InLocation) == 0 && !OpenedMap.Contains(InLocation))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("P2 Main Action: Location: %d,%d"), InLocation.X, InLocation.Y);
+
+		// Display as Empty style
+		TSharedPtr<SMinesWidget>* tempWidget = GeneratedButtonIDs.Find(InLocation);
+		tempWidget->Get()->DisplayEmptyStyle();
+
+		// Add to OpenedMap
+		OpenedMap.Add(InLocation);
+	}
+
+	FIntPoint* tempLoc = new FIntPoint();
+	tempLoc = &InLocation;
+	int* tempX = &InLocation.X;
+	int* tempY = &InLocation.Y;
+
+	int* tempXLeft = new int();
+	tempXLeft = tempX - 1;
+	int* tempXRight = new int();
+	tempXRight = tempX + 1;
+	int* tempYUp = new int();
+	tempYUp = tempY - 1;
+	int* tempYDown = new int();
+	tempYDown = tempY + 1;
+
+	FIntPoint* tempUp =  new FIntPoint();
+	*tempUp = FIntPoint(*tempX, *tempYUp); //*&
+	FIntPoint* tempDown = new FIntPoint();
+	*tempDown = FIntPoint(*tempX, *tempYDown);
+	FIntPoint* tempLeft =  new FIntPoint();
+	*tempLeft = FIntPoint(*tempXLeft, *tempY);
+	FIntPoint* tempRight = new FIntPoint();
+	*tempRight = FIntPoint(*tempXRight, *tempY);
+
+	FIntPoint* tempNewTryPoint_Up = new FIntPoint();
+	*tempNewTryPoint_Up = FIntPoint(*tempLoc + *tempUp);
+	const FIntPoint tempUp_Loc = *tempNewTryPoint_Up;
+	int tempUp_Number = int();
+	if (NumberOfMinesSurroundMap.Contains(tempUp_Loc))
+	{
+		tempUp_Number = *NumberOfMinesSurroundMap.Find(tempUp_Loc);
+		bool tempUp_HaveNumber = (tempUp_Number == 0) ? true : false;
+
+		UE_LOG(LogTemp, Warning, TEXT("Up Location: %d, %d"), tempUp_Loc.X, tempUp_Loc.Y);
+	
+		if (NumberOfMinesSurroundMap.Contains(tempUp_Loc) && tempUp_HaveNumber && !OpenedMap.Contains(tempUp_Loc)) //if (NumberOfMinesSurroundMap.Contains(*tempNewTryPoint_Up) && *NumberOfMinesSurroundMap.Find(tempNewTryPoint_Up) == 0 && !OpenedMap.Contains(tempNewTryPoint_Up))
+
+		{
+			int tempDebug1 = int();
+			tempDebug1 = tempNewTryPoint_Up->X;
+			UE_LOG(LogTemp, Warning, TEXT("P3: Up Location: %d,%d"), *&tempNewTryPoint_Up->X, *&tempNewTryPoint_Up->Y);
+			//UE_LOG(LogTemp, Warning, TEXT("P3: Up Location: %d,%d"), *&tempNewTryPoint_Up.X, *&tempNewTryPoint_Up.Y);
+			CheckEmptySpaceCore(*tempNewTryPoint_Up);
+		}
+	}
+
+
+	//FIntPoint* tempNewTryPoint_Down = new FIntPoint();
+	//*tempNewTryPoint_Down = FIntPoint(*tempLoc + *tempDown);
+	//if (NumberOfMinesSurroundMap.Contains(*tempNewTryPoint_Down) && *NumberOfMinesSurroundMap.Find(*tempNewTryPoint_Down) == 0 && !OpenedMap.Contains(*tempNewTryPoint_Down))
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("P3: Down Location: %d,%d"), *&tempNewTryPoint_Down->X, *&tempNewTryPoint_Down->Y);
+
+	//	CheckEmptySpaceCore(*tempNewTryPoint_Down);
+	//}
+
+	//FIntPoint* tempNewTryPoint_Left = new FIntPoint();
+	//*tempNewTryPoint_Left = FIntPoint(*tempLoc + *tempLeft);
+	//if (NumberOfMinesSurroundMap.Contains(*tempNewTryPoint_Left) && *NumberOfMinesSurroundMap.Find(*tempNewTryPoint_Left) == 0 && !OpenedMap.Contains(*tempNewTryPoint_Left))
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("P3: Left Location: %d,%d"), *&tempNewTryPoint_Left->X, *&tempNewTryPoint_Left->Y);
+
+	//	CheckEmptySpaceCore(*tempNewTryPoint_Left);
+	//}
+
+	//FIntPoint* tempNewTryPoint_Right = new FIntPoint();
+	//*tempNewTryPoint_Right = FIntPoint(*tempLoc + *tempRight);
+	//if (NumberOfMinesSurroundMap.Contains(*tempNewTryPoint_Right) && *NumberOfMinesSurroundMap.Find(*tempNewTryPoint_Right) == 0 && !OpenedMap.Contains(*tempNewTryPoint_Right))
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("P3: Right Location: %d,%d"), *&tempNewTryPoint_Right->X, *&tempNewTryPoint_Right->Y);
+
+	//	CheckEmptySpaceCore(*tempNewTryPoint_Right);
+	//}
+
+
+
+
+	return;
+}
+
 void FMinesweeperModule::Debug_LogFIntPoint(TArray<FIntPoint> InArray, FString InPrefix)
 {
-	FString tempDebug1;
+	FString* tempDebug_LogFIntPoint = new FString();
 
-	tempDebug1 += InPrefix;
+	tempDebug_LogFIntPoint->Append(InPrefix);
 
 	for (auto it : InArray)
 	{
-		tempDebug1 += "[";
-		tempDebug1 += FString::FromInt(it.X);
-		tempDebug1 += ",";
-		tempDebug1 += FString::FromInt(it.Y);
-		tempDebug1 += "]";
+		tempDebug_LogFIntPoint->Append("[");
+		tempDebug_LogFIntPoint->Append(FString::FromInt(it.X));
+		tempDebug_LogFIntPoint->Append(",");
+		tempDebug_LogFIntPoint->Append(FString::FromInt(it.Y));
+		tempDebug_LogFIntPoint->Append("]");
 	}
-	FText tempDebug2 = FText::FromString(tempDebug1);
-	FMessageDialog::Open(EAppMsgType::Ok, tempDebug2);
-	//UE_LOG(LogTemp, Display, tempDebug1);
+
+	UE_LOG(LogTemp, Warning, TEXT("%s: %s"), &InPrefix, tempDebug_LogFIntPoint);
+	/*FText tempDebug2 = FText::FromString(tempDebug1);
+	FMessageDialog::Open(EAppMsgType::Ok, tempDebug2);*/
 
 }
 
 void FMinesweeperModule::Debug_LogFIntPointInt(TMap<FIntPoint, int> InMap, FString InPrefix)
 {
-	FString tempDebug1;
+	FString* tempDebug1 = new FString();
 
-	tempDebug1 += InPrefix;
+	//tempDebug1 += InPrefix;
+	tempDebug1->Append(InPrefix);
 
 	for (auto it : InMap)
 	{
-		tempDebug1 += "[";
-		tempDebug1 += FString::FromInt(it.Key.X);
-		tempDebug1 += ",";
-		tempDebug1 += FString::FromInt(it.Key.Y);
-		tempDebug1 += ":";
-		tempDebug1 += FString::FromInt(it.Value);
-		tempDebug1 += "]";
+		tempDebug1->Append("[");
+		tempDebug1->Append(FString::FromInt(it.Key.X));
+		tempDebug1->Append(",");
+		tempDebug1->Append(FString::FromInt(it.Key.Y));
+		tempDebug1->Append(":");
+		tempDebug1->Append(FString::FromInt(it.Value));
+		tempDebug1->Append("]");
 	}
-	FText tempDebug2 = FText::FromString(tempDebug1);
-	FMessageDialog::Open(EAppMsgType::Ok, tempDebug2);
+
+	UE_LOG(LogTemp, Warning, TEXT("%s"), tempDebug1);
+
+	//FText tempDebug2 = FText::FromString(tempDebug1);
+	//FMessageDialog::Open(EAppMsgType::Ok, tempDebug2);
 	//UE_LOG(LogTemp, Display, tempDebug1);
 
 }

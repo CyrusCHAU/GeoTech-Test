@@ -110,6 +110,10 @@ private:
 
 	/** Actor for Win the game. */
 	void WinGameMain();
+
+	void CheckEmptySpacesMain(FIntPoint InStartLocation);
+
+	void CheckEmptySpaceCore(FIntPoint InLocation);
 	
 #pragma endregion
 

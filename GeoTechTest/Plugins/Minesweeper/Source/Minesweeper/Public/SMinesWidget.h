@@ -66,7 +66,5 @@ public:
 	void DisplayMinesStyle();
 
 
-	void CheckEmptySpacesMain(FIntPoint InStartLocation);
-
-	int CheckGridCore(FIntPoint InLocation);
+	
 };

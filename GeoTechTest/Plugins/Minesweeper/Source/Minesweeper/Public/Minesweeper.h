@@ -60,7 +60,7 @@ private:
 	TArray<FIntPoint> MinesMap;
 
 	/** The discovered location. The location stored in (X, Y). */
-	TArray<FIntPoint> OpenedMap;
+	TSet<FIntPoint> OpenedMap;
 
 	/** 
 	* The pre-calculate map that already shows the each grid how many mines they surround. 
@@ -113,6 +113,7 @@ private:
 
 	void CheckEmptySpacesMain(FIntPoint InStartLocation);
 
+	/** Resurion. Only empty/near empty grid will enter this function. */
 	void CheckEmptySpaceCore(FIntPoint InLocation);
 	
 #pragma endregion

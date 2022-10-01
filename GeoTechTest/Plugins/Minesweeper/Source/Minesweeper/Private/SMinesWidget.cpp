@@ -56,8 +56,8 @@ void SMinesWidget::DisplayEmptyStyle()
 void SMinesWidget::DisplayNumberStyle(int InNumber)
 {
 	// Change text color
-	//FLinearColor tempColor = (InNumber == 1) ? FLinearColor(0, 0, 1) : (InNumber == 2) ? FLinearColor(0, 1, .3) : FLinearColor(1, 0, 0);
-	MyButton->SetColorAndOpacity(FLinearColor(1, 1, 0));
+	FLinearColor tempColor = (InNumber == 1) ? FLinearColor(0, 0, 1) : (InNumber == 2) ? FLinearColor(0, 1, .3) : FLinearColor(1, 0, 0);
+	MyButton->SetColorAndOpacity(tempColor); //FLinearColor(1, 1, 0)
 
 	// Show number
 	MyLabel->SetText(FText::FromString(FString::FromInt(InNumber)));

@@ -100,13 +100,16 @@ private:
 	TArray<FIntPoint> GenerateMinesMapMain(int InWidth, int InHeight, int InMines);
 
 	/** Calculate a number of mines surround for each grid. -1 is mines.Store in (X, Y)*/
-	TMap<FIntPoint, int> CalculateNumberOfMinesMap(int InWidth, int InHeight);
+	TMap<FIntPoint, int> CalculateNumberOfMinesMap();
 
 	/** Check if the location is a mines. */
 	bool CheckIsMines(FIntPoint InLocaion);
 
 	/** Action for a lose game. */
 	void LoseGameMain();
+
+	/** Actor for Win the game. */
+	void WinGameMain();
 	
 #pragma endregion
 

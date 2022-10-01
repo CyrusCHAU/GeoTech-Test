@@ -238,11 +238,6 @@ void FMinesweeperModule::GenerateGridMain(int InWidth, int InHeight, int InMines
 			{
 				FIntPoint tempLocation = FIntPoint(w, h); // This is (X, Y)
 				GeneratedButtonIDs.Add(tempLocation, AddGridButtonCore(tempHorizontalBox, tempLocation));
-
-				// This is OK in GeneratedButtonIDs
-				/*TArray<FIntPoint> tempKeys;
-				GeneratedButtonIDs.GetKeys(tempKeys);
-				Debug_LogFIntPoint(tempKeys, "P1: New added to GeneratedButtonIDs");*/ 
 			}
 		}
 
@@ -251,7 +246,7 @@ void FMinesweeperModule::GenerateGridMain(int InWidth, int InHeight, int InMines
 		Debug_LogFIntPoint(MinesMap, "MinesMap: ");
 
 		// Calculate number of mines in each grid
-		NumberOfMinesSurroundMap = CalculateNumberOfMinesMap(InWidth, InHeight);
+		NumberOfMinesSurroundMap = CalculateNumberOfMinesMap();
 		Debug_LogFIntPointInt(NumberOfMinesSurroundMap);
 
 	} 
@@ -387,56 +382,13 @@ TArray<FIntPoint> FMinesweeperModule::GenerateMinesMapMain(int InWidth, int InHe
 	return tempMinesLocations;
 }
 
-TMap<FIntPoint, int> FMinesweeperModule::CalculateNumberOfMinesMap(int InWidth, int InHeight)
+TMap<FIntPoint, int> FMinesweeperModule::CalculateNumberOfMinesMap()
 {
 	// Local Map
 	TMap<FIntPoint, int>* tempMap = new TMap<FIntPoint, int>();
 
-	//for (int h = 0; h < InHeight; h++)
-	//{
-	//	for (int w = 0; w < InWidth; w++)
-	//	{
-	//		if (MinesMap.Contains((h, w)))
-	//		{
-	//			tempMap.Add((h, w), -1);
-
-	//			Debug_LogFIntPointInt(tempMap, "Contains Mines in this location");
-	//			//continue;
-	//		}
-	//		else
-	//		{
-	//			// Store local number
-	//			int tempNumber = 0;
-
-	//			// Check near 8 spaces
-	//			TArray<FIntPoint> tempNeighbor;
-	//			tempNeighbor.Add((h - 1, w - 1));
-	//			tempNeighbor.Add((h - 1, w    ));
-	//			tempNeighbor.Add((h - 1, w + 1));
-	//			tempNeighbor.Add((h    , w - 1));
-	//			tempNeighbor.Add((h    , w + 1));
-	//			tempNeighbor.Add((h + 1, w - 1));
-	//			tempNeighbor.Add((h + 1, w    ));
-	//			tempNeighbor.Add((h + 1, w + 1));
-	//			
-	//			for (FIntPoint tempLoc : tempNeighbor)
-	//			{
-	//				if (CheckIsMines(tempLoc))
-	//				{
-	//					tempNumber += 1;
-	//				} 
-	//			}
-	//			
-	//			tempMap.Add((h, w), tempNumber);
-
-	//			Debug_LogFIntPointInt(tempMap, "No Mines in this location");
-	//		}
-	//	}
-	//}
-
 	TArray<FIntPoint> tempArray;
 	GeneratedButtonIDs.GetKeys(tempArray);
-	Debug_LogFIntPoint(tempArray, "New Array for Looping");
 
 	for (FIntPoint it : tempArray)
 	{
@@ -447,7 +399,6 @@ TMap<FIntPoint, int> FMinesweeperModule::CalculateNumberOfMinesMap(int InWidth, 
 			FIntPoint tempGridOP = FIntPoint(it.X, it.Y);
 			tempMap->Add(tempGridOP, -1);
 
-			Debug_LogFIntPointInt(*tempMap, "Contains Mines in this location:");
 			//continue;
 		}
 		else
@@ -483,8 +434,6 @@ TMap<FIntPoint, int> FMinesweeperModule::CalculateNumberOfMinesMap(int InWidth, 
 			tempNeighbor->Add(tempGrid7);
 			tempNeighbor->Add(tempGrid8);
 
-			Debug_LogFIntPoint(*tempNeighbor, "TempNeighbor");
-
 			for (FIntPoint tempLoc : *tempNeighbor)
 			{
 				UE_LOG(LogTemp, Warning, TEXT("Current Looping Neighbor: %d, %d"), tempLoc.X, tempLoc.Y);
@@ -497,8 +446,6 @@ TMap<FIntPoint, int> FMinesweeperModule::CalculateNumberOfMinesMap(int InWidth, 
 
 			FIntPoint tempGridOP = FIntPoint(tempIT_X, tempIT_Y);
 			tempMap->Add(tempGridOP, tempNumber);
-
-			Debug_LogFIntPointInt(*tempMap, "No Mines in this location");
 		}
 	}
 	return *tempMap;

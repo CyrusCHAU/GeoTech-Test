@@ -455,11 +455,8 @@ void FMinesweeperModule::WinGameMain()
 void FMinesweeperModule::CheckEmptySpacesMain(FIntPoint InStartLocation)
 {
 	// Display as Empty style
-	TSharedPtr<SMinesWidget>* tempWidget = GeneratedButtonIDs.Find(InStartLocation);
-	tempWidget->Get()->DisplayEmptyStyle();
-
-	// Add to OpenedMap
-	//OpenedMap.Add(InStartLocation);
+	/*TSharedPtr<SMinesWidget>* tempWidget = GeneratedButtonIDs.Find(InStartLocation);
+	tempWidget->Get()->DisplayEmptyStyle();*/
 
 	// Recursion
 	CheckEmptySpaceCore(InStartLocation);
@@ -473,18 +470,9 @@ void FMinesweeperModule::CheckEmptySpaceCore(FIntPoint InLocation)
 	// Add to OpenedMap
 	OpenedMap.Add(InLocation);
 
-	// Main Action: Display empty if it is.
-	if (NumberOfMinesSurroundMap.Contains(InLocation) && *NumberOfMinesSurroundMap.Find(InLocation) == 0 && !OpenedMap.Contains(InLocation))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("P2 Main Action: Location: %d,%d"), InLocation.X, InLocation.Y);
-
-		// Display as Empty style
-		TSharedPtr<SMinesWidget>* tempWidget = GeneratedButtonIDs.Find(InLocation);
-		tempWidget->Get()->DisplayEmptyStyle();
-
-		// Add to OpenedMap
-		//OpenedMap.Add(InLocation);
-	}
+	// Display as Empty style
+	TSharedPtr<SMinesWidget>* tempWidget = GeneratedButtonIDs.Find(InLocation);
+	tempWidget->Get()->DisplayEmptyStyle();
 
 	//FIntPoint tempLoc = FIntPoint();
 	//tempLoc = InLocation;
@@ -571,8 +559,8 @@ void FMinesweeperModule::CheckEmptySpaceCore(FIntPoint InLocation)
 			// It is a number grid
 			else
 			{
-				TSharedPtr<SMinesWidget>* tempWidget = GeneratedButtonIDs.Find(tempLoc);
-				tempWidget->Get()->DisplayNumberStyle(tempNumber);
+				TSharedPtr<SMinesWidget>* tempWidget2 = GeneratedButtonIDs.Find(tempLoc);
+				tempWidget2->Get()->DisplayNumberStyle(tempNumber);
 			}
 
 		}

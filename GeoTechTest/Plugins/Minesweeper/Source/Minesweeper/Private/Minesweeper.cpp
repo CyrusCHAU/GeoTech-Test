@@ -599,10 +599,7 @@ int FMinesweeperModule::CheckEmptySpaceCore(FIntPoint InLocation, int InCounter)
 		FIntPoint tempGridRightUpCorner = FIntPoint(tempRight, tempUp);
 		FIntPoint tempGridLeftDownCorner = FIntPoint(tempLeft, tempDown);
 		FIntPoint tempGridRightDownCorner = FIntPoint(tempRight, tempDown);
-		/*tempCheckList_Corner->Add(tempGridLeftUpCorner);
-		tempCheckList_Corner->Add(tempGridRightUpCorner);
-		tempCheckList_Corner->Add(tempGridLeftDownCorner);
-		tempCheckList_Corner->Add(tempGridRightDownCorner);*/
+
 		UE_LOG(LogTemp, Warning, TEXT("[C2] tempGridUpCorner: %d, %d"), tempGridUpCorner.X, tempGridUpCorner.Y);
 		UE_LOG(LogTemp, Warning, TEXT("[C2] tempGridDownCorner: %d, %d"), tempGridDownCorner.X, tempGridDownCorner.Y);
 		UE_LOG(LogTemp, Warning, TEXT("[C2] tempGridLeftCorner: %d, %d"), tempGridLeftCorner.X, tempGridLeftCorner.Y);
@@ -628,9 +625,24 @@ int FMinesweeperModule::CheckEmptySpaceCore(FIntPoint InLocation, int InCounter)
 			// Only in not opened
 			if (!OpenedMap.Contains(tempGridLeftUpCorner))
 			{
-				OpenedMap.Add(tempGridLeftUpCorner);
-				TSharedPtr<SMinesWidget>* tempWidgetCorner = GeneratedButtonIDs.Find(tempGridLeftUpCorner);
-				tempWidgetCorner->Get()->DisplayNumberStyle(*NumberOfMinesSurroundMap.Find(tempGridLeftUpCorner));
+				// The corner number
+				int tempCornerNumber = *NumberOfMinesSurroundMap.Find(tempGridLeftUpCorner);
+
+				// If that is number grid
+				if (tempCornerNumber > 0)
+				{
+					OpenedMap.Add(tempGridLeftUpCorner);
+
+					TSharedPtr<SMinesWidget>* tempWidgetCorner = GeneratedButtonIDs.Find(tempGridLeftUpCorner);
+					tempWidgetCorner->Get()->DisplayNumberStyle(*NumberOfMinesSurroundMap.Find(tempGridLeftUpCorner));
+				}
+				// That is 0 empty grid, keep recursion
+				else
+				{
+					tempCounter += 1;
+
+					tempCounter = CheckEmptySpaceCore(tempGridLeftUpCorner, tempCounter);
+				}
 			}
 		}
 
@@ -643,9 +655,23 @@ int FMinesweeperModule::CheckEmptySpaceCore(FIntPoint InLocation, int InCounter)
 
 			if (!OpenedMap.Contains(tempGridRightUpCorner))
 			{
-				OpenedMap.Add(tempGridRightUpCorner);
-				TSharedPtr<SMinesWidget>* tempWidgetCorner = GeneratedButtonIDs.Find(tempGridRightUpCorner);
-				tempWidgetCorner->Get()->DisplayNumberStyle(*NumberOfMinesSurroundMap.Find(tempGridRightUpCorner));
+				// The corner number
+				int tempCornerNumber = *NumberOfMinesSurroundMap.Find(tempGridRightUpCorner);
+
+				// If that is number grid
+				if (tempCornerNumber > 0)
+				{
+					OpenedMap.Add(tempGridRightUpCorner);
+					TSharedPtr<SMinesWidget>* tempWidgetCorner = GeneratedButtonIDs.Find(tempGridRightUpCorner);
+					tempWidgetCorner->Get()->DisplayNumberStyle(*NumberOfMinesSurroundMap.Find(tempGridRightUpCorner));
+				}
+				// That is 0 empty grid, keep recursion
+				else
+				{
+					tempCounter += 1;
+
+					tempCounter = CheckEmptySpaceCore(tempGridRightUpCorner, tempCounter);
+				}
 			}
 		}
 
@@ -658,10 +684,23 @@ int FMinesweeperModule::CheckEmptySpaceCore(FIntPoint InLocation, int InCounter)
 
 			if (!OpenedMap.Contains(tempGridLeftDownCorner))
 			{
-				OpenedMap.Add(tempGridLeftDownCorner);
-				TSharedPtr<SMinesWidget>* tempWidgetCorner = GeneratedButtonIDs.Find(tempGridLeftDownCorner);
-				tempWidgetCorner->Get()->DisplayNumberStyle(*NumberOfMinesSurroundMap.Find(tempGridLeftDownCorner));
+				// The corner number
+				int tempCornerNumber = *NumberOfMinesSurroundMap.Find(tempGridLeftDownCorner);
 
+				// If that is number grid
+				if (tempCornerNumber > 0)
+				{
+					OpenedMap.Add(tempGridLeftDownCorner);
+					TSharedPtr<SMinesWidget>* tempWidgetCorner = GeneratedButtonIDs.Find(tempGridLeftDownCorner);
+					tempWidgetCorner->Get()->DisplayNumberStyle(*NumberOfMinesSurroundMap.Find(tempGridLeftDownCorner));
+				}
+				// That is 0 empty grid, keep recursion
+				else
+				{
+					tempCounter += 1;
+
+					tempCounter = CheckEmptySpaceCore(tempGridLeftDownCorner, tempCounter);
+				}
 			}
 		}
 
@@ -674,9 +713,23 @@ int FMinesweeperModule::CheckEmptySpaceCore(FIntPoint InLocation, int InCounter)
 
 			if (!OpenedMap.Contains(tempGridRightDownCorner))
 			{
-				OpenedMap.Add(tempGridRightDownCorner);
-				TSharedPtr<SMinesWidget>* tempWidgetCorner = GeneratedButtonIDs.Find(tempGridRightDownCorner);
-				tempWidgetCorner->Get()->DisplayNumberStyle(*NumberOfMinesSurroundMap.Find(tempGridRightDownCorner));
+				// The corner number
+				int tempCornerNumber = *NumberOfMinesSurroundMap.Find(tempGridRightDownCorner);
+
+				// If that is number grid
+				if (tempCornerNumber > 0)
+				{
+					OpenedMap.Add(tempGridRightDownCorner);
+					TSharedPtr<SMinesWidget>* tempWidgetCorner = GeneratedButtonIDs.Find(tempGridRightDownCorner);
+					tempWidgetCorner->Get()->DisplayNumberStyle(*NumberOfMinesSurroundMap.Find(tempGridRightDownCorner));
+				}
+				// That is 0 empty grid, keep recursion
+				else
+				{
+					tempCounter += 1;
+
+					tempCounter = CheckEmptySpaceCore(tempGridRightDownCorner, tempCounter);
+				}
 			}
 		}
 

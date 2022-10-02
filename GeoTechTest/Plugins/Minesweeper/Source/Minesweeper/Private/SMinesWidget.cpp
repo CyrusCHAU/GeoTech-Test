@@ -20,8 +20,6 @@ void SMinesWidget::Construct(const FArguments& InArgs)
 		.OnClicked_Raw(this, &SMinesWidget::OnButtonClicked)
 		[
 			SAssignNew(MyLabel, STextBlock)
-			//.Text(FText::FromString(TEXT(" ")))
-			//.Justification(ETextJustify::Center)
 		]
 	];
 	

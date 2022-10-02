@@ -90,7 +90,7 @@ private:
 	//TSharedPtr<SMinesWidget> temp1(); // This ok
 
 	/** Empty all grid & buttons. */
-	void ClearAllButtons();
+	void ResetAllData();
 
 	/** Called when user click a grid button during finding a mine. */
 	FReply OnMineButtonClicked(FIntPoint InLocation, SMinesWidget* InWidget);

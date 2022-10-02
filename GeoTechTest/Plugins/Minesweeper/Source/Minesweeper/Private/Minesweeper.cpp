@@ -228,7 +228,7 @@ void FMinesweeperModule::GenerateGridMain(int InWidth, int InHeight, int InMines
 	if (InMines < InWidth * InHeight)
 	{
 		// Clear All Buttons Under Root
-		ClearAllButtons();
+		ResetAllData();
 
 		// Height, Row
 		for (int h = 0; h < InHeight; h++)
@@ -293,13 +293,19 @@ TSharedPtr<SMinesWidget> FMinesweeperModule::AddGridButtonCore(TSharedPtr<SHoriz
 
 }
 
-void FMinesweeperModule::ClearAllButtons()
+void FMinesweeperModule::ResetAllData()
 {
-	// Clear Stored Buttons
-	GeneratedButtonIDs.Empty();
-
 	// Remove All Childs
 	GridVerticalBoxRoot->ClearChildren();
+
+	// Clear All Var
+	GeneratedButtonIDs.Empty();
+
+	OpenedMap.Empty();
+
+	MinesMap.Empty();
+
+	NumberOfMinesSurroundMap.Empty();
 }
 
 FReply  FMinesweeperModule::OnMineButtonClicked(FIntPoint InLocation, SMinesWidget* InWidget)

@@ -70,6 +70,8 @@ private:
 
 #pragma endregion
 
+	bool UserCanInput;
+
 #pragma region Generate Mines / Grid Button Method
 
 private:
@@ -110,6 +112,9 @@ private:
 
 	/** Actor for Win the game. */
 	void WinGameMain();
+
+	/** Display all mines. */
+	void ShowAllMines();
 
 	void CheckEmptySpacesMain(FIntPoint InStartLocation);
 

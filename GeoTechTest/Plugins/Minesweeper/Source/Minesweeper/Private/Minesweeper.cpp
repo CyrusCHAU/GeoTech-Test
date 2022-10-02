@@ -211,18 +211,25 @@ FReply FMinesweeperModule::OnGenerateGridButtonClicked()
 	GridMines = Input_NumberOfMinesSpinBox.Get()->GetValue();
 
 	// Generate Grid Main Action
-	GenerateGridMain(GridWidth, GridHeight, GridMines);
+	if (GenerateGridMain(GridWidth, GridHeight, GridMines))
+	{
+		// After Sucessful, Give a Message in Button
+		Input_GenerateGridLabel.Get()->SetText(FText::FromString(TEXT("Game Started!")));
 
-	// After Sucessful, Give a Message in Button
-	Input_GenerateGridLabel.Get()->SetText(FText::FromString(TEXT("Game Started!")));
+		// Accept user input
+		UserCanInput = true;
+	}
+	else
+	{
+		// Give a message when the input number is invalid
+		Input_GenerateGridLabel.Get()->SetText(FText::FromString(TEXT("Number of Mines is too large!")));
+	}
 
-	// Accept user input
-	UserCanInput = true;
 
 	return FReply::Handled();
 }
 
-void FMinesweeperModule::GenerateGridMain(int InWidth, int InHeight, int InMines)
+bool FMinesweeperModule::GenerateGridMain(int InWidth, int InHeight, int InMines)
 {
 	// Check Conditions. Only play when number of mines is smaller than the total grid size.
 	if (InMines < InWidth * InHeight)
@@ -261,10 +268,12 @@ void FMinesweeperModule::GenerateGridMain(int InWidth, int InHeight, int InMines
 		NumberOfMinesSurroundMap = CalculateNumberOfMinesMap();
 		//Debug_LogFIntPointInt(NumberOfMinesSurroundMap);
 
+		return true;
+
 	} 
 	else
 	{
-		return;
+		return false;
 	}
 }
 

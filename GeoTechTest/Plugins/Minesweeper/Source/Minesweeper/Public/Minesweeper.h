@@ -80,7 +80,7 @@ private:
 	FReply OnGenerateGridButtonClicked();
 
 	/** Main action to generate a new grid. */
-	void GenerateGridMain(int InWidth, int InHeight, int InMines);
+	bool GenerateGridMain(int InWidth, int InHeight, int InMines);
 
 	/** 
 	* Add a grid button. For internal use only. 

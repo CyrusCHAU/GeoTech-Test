@@ -493,7 +493,7 @@ void FMinesweeperModule::CheckEmptySpacesMain(FIntPoint InStartLocation)
 
 int FMinesweeperModule::CheckEmptySpaceCore(FIntPoint InLocation, int InCounter)
 {
-	UE_LOG(LogTemp, Warning, TEXT("P1 Entry: Location: %d,%d."), InLocation.X, InLocation.Y);
+	//UE_LOG(LogTemp, Warning, TEXT("P1 Entry: Location: %d,%d."), InLocation.X, InLocation.Y);
 	//Debug_LogFIntPoint(OpenedMap, "P1 Before OpenedMap");
 
 	// Add to OpenedMap
@@ -528,7 +528,7 @@ int FMinesweeperModule::CheckEmptySpaceCore(FIntPoint InLocation, int InCounter)
 
 	for (FIntPoint tempLoc : *tempCheckList)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("P3 Check Empty Location: %d, %d"), tempLoc.X, tempLoc.Y);
+		//UE_LOG(LogTemp, Warning, TEXT("P3 Check Empty Location: %d, %d"), tempLoc.X, tempLoc.Y);
 
 		// Prevent exception
 		if (NumberOfMinesSurroundMap.Contains(tempLoc))
@@ -564,7 +564,7 @@ int FMinesweeperModule::CheckEmptySpaceCore(FIntPoint InLocation, int InCounter)
 	
 	if (tempCounter > 0)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("[C1] Corner Start: Location:  %d, %d"), tempLoc_X, tempLoc_Y);
+		//UE_LOG(LogTemp, Warning, TEXT("[C1] Corner Start: Location:  %d, %d"), tempLoc_X, tempLoc_Y);
 
 		FIntPoint tempGridUpCorner = FIntPoint(tempLoc_X, tempUp);
 		FIntPoint tempGridDownCorner = FIntPoint(tempLoc_X, tempDown);
@@ -576,7 +576,7 @@ int FMinesweeperModule::CheckEmptySpaceCore(FIntPoint InLocation, int InCounter)
 		FIntPoint tempGridLeftDownCorner = FIntPoint(tempLeft, tempDown);
 		FIntPoint tempGridRightDownCorner = FIntPoint(tempRight, tempDown);
 
-		UE_LOG(LogTemp, Warning, TEXT("[C2] tempGridUpCorner: %d, %d"), tempGridUpCorner.X, tempGridUpCorner.Y);
+		/*UE_LOG(LogTemp, Warning, TEXT("[C2] tempGridUpCorner: %d, %d"), tempGridUpCorner.X, tempGridUpCorner.Y);
 		UE_LOG(LogTemp, Warning, TEXT("[C2] tempGridDownCorner: %d, %d"), tempGridDownCorner.X, tempGridDownCorner.Y);
 		UE_LOG(LogTemp, Warning, TEXT("[C2] tempGridLeftCorner: %d, %d"), tempGridLeftCorner.X, tempGridLeftCorner.Y);
 		UE_LOG(LogTemp, Warning, TEXT("[C2] tempGridRightCorner: %d, %d"), tempGridRightCorner.X, tempGridRightCorner.Y);
@@ -584,19 +584,19 @@ int FMinesweeperModule::CheckEmptySpaceCore(FIntPoint InLocation, int InCounter)
 		UE_LOG(LogTemp, Warning, TEXT("[C3] LeftUpCorner: %d, %d"), tempGridLeftUpCorner.X, tempGridLeftUpCorner.Y);
 		UE_LOG(LogTemp, Warning, TEXT("[C3] RightUpCorner: %d, %d"), tempGridRightUpCorner.X, tempGridRightUpCorner.Y);
 		UE_LOG(LogTemp, Warning, TEXT("[C3] LeftDownCorner: %d, %d"), tempGridLeftDownCorner.X, tempGridLeftDownCorner.Y);
-		UE_LOG(LogTemp, Warning, TEXT("[C3] RightDownCorner: %d, %d"), tempGridRightDownCorner.X, tempGridRightDownCorner.Y);
+		UE_LOG(LogTemp, Warning, TEXT("[C3] RightDownCorner: %d, %d"), tempGridRightDownCorner.X, tempGridRightDownCorner.Y);*/
 
 		bool tempUp_Contains = OpenedMap.Contains(tempGridUpCorner);
 		bool tempLeft_Contains = OpenedMap.Contains(tempGridLeftCorner);
 		bool tempDown_Contains = OpenedMap.Contains(tempGridDownCorner);
 		bool tempRight_Contains = OpenedMap.Contains(tempGridRightCorner);
 
-		UE_LOG(LogTemp, Warning, TEXT("[C4] Left Up Condition: Left %s, Up %s"), (tempLeft_Contains? TEXT("True") : TEXT("False")), (tempUp_Contains ? TEXT("True") : TEXT("False")));
+		//UE_LOG(LogTemp, Warning, TEXT("[C4] Left Up Condition: Left %s, Up %s"), (tempLeft_Contains? TEXT("True") : TEXT("False")), (tempUp_Contains ? TEXT("True") : TEXT("False")));
 
 		// Left Up
 		if (tempUp_Contains && tempLeft_Contains) 
 		{
-			UE_LOG(LogTemp, Warning, TEXT("[C5] Inside Left Up"));
+			//UE_LOG(LogTemp, Warning, TEXT("[C5] Inside Left Up"));
 
 			// Only in not opened
 			if (!OpenedMap.Contains(tempGridLeftUpCorner))
@@ -622,12 +622,12 @@ int FMinesweeperModule::CheckEmptySpaceCore(FIntPoint InLocation, int InCounter)
 			}
 		}
 
-		UE_LOG(LogTemp, Warning, TEXT("[C4] Right Up Condition: Right %s, Up %s"), (tempRight_Contains ? TEXT("True") : TEXT("False")), (tempUp_Contains ? TEXT("True") : TEXT("False")));
+		//UE_LOG(LogTemp, Warning, TEXT("[C4] Right Up Condition: Right %s, Up %s"), (tempRight_Contains ? TEXT("True") : TEXT("False")), (tempUp_Contains ? TEXT("True") : TEXT("False")));
 
 		// Right Up
 		if (tempUp_Contains && tempRight_Contains) //OpenedMap.Contains(tempGridUpCorner) && OpenedMap.Contains(tempGridRightCorner)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("[C5] Inside Right Up"));
+			//UE_LOG(LogTemp, Warning, TEXT("[C5] Inside Right Up"));
 
 			if (!OpenedMap.Contains(tempGridRightUpCorner))
 			{
@@ -651,12 +651,12 @@ int FMinesweeperModule::CheckEmptySpaceCore(FIntPoint InLocation, int InCounter)
 			}
 		}
 
-		UE_LOG(LogTemp, Warning, TEXT("[C4] Left Down Condition: Left %s, Down %s"), (tempLeft_Contains ? TEXT("True") : TEXT("False")), (tempDown_Contains ? TEXT("True") : TEXT("False")));
+		//UE_LOG(LogTemp, Warning, TEXT("[C4] Left Down Condition: Left %s, Down %s"), (tempLeft_Contains ? TEXT("True") : TEXT("False")), (tempDown_Contains ? TEXT("True") : TEXT("False")));
 
 		// Left Down
 		if (OpenedMap.Contains(tempGridDownCorner) && OpenedMap.Contains(tempGridLeftCorner))
 		{
-			UE_LOG(LogTemp, Warning, TEXT("[C5] Inside Left Down"));
+			//UE_LOG(LogTemp, Warning, TEXT("[C5] Inside Left Down"));
 
 			if (!OpenedMap.Contains(tempGridLeftDownCorner))
 			{
@@ -680,12 +680,12 @@ int FMinesweeperModule::CheckEmptySpaceCore(FIntPoint InLocation, int InCounter)
 			}
 		}
 
-		UE_LOG(LogTemp, Warning, TEXT("[C4] Right Down Condition: Right %s, Down %s"), (tempRight_Contains ? TEXT("True") : TEXT("False")), (tempDown_Contains ? TEXT("True") : TEXT("False")));
+		//UE_LOG(LogTemp, Warning, TEXT("[C4] Right Down Condition: Right %s, Down %s"), (tempRight_Contains ? TEXT("True") : TEXT("False")), (tempDown_Contains ? TEXT("True") : TEXT("False")));
 
 		// Right Down
 		if (OpenedMap.Contains(tempGridDownCorner) && OpenedMap.Contains(tempGridRightCorner))
 		{
-			UE_LOG(LogTemp, Warning, TEXT("[C5] Inside Right Down"));
+			//UE_LOG(LogTemp, Warning, TEXT("[C5] Inside Right Down"));
 
 			if (!OpenedMap.Contains(tempGridRightDownCorner))
 			{
@@ -727,7 +727,7 @@ void FMinesweeperModule::Debug_LogFIntPoint(TArray<FIntPoint> InArray, FString I
 		tempDebug_LogFIntPoint->Append("]");
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("%s: %s"), &InPrefix, tempDebug_LogFIntPoint);
+	//UE_LOG(LogTemp, Warning, TEXT("%s: %s"), &InPrefix, tempDebug_LogFIntPoint);
 }
 
 void FMinesweeperModule::Debug_LogFIntPointInt(TMap<FIntPoint, int> InMap, FString InPrefix)
@@ -748,7 +748,7 @@ void FMinesweeperModule::Debug_LogFIntPointInt(TMap<FIntPoint, int> InMap, FStri
 		tempDebug1->Append("]");
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("%s"), tempDebug1);
+	//UE_LOG(LogTemp, Warning, TEXT("%s"), tempDebug1);
 }
 
 

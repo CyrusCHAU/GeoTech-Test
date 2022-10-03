@@ -1,6 +1,6 @@
-D:\Cyrus\AW\GeoTech-Test\GeoTechTest\Plugins\Minesweeper\Intermediate\Build\Win64\UnrealEditor\Development\Minesweeper\Module.Minesweeper.cpp
+D:\Workspace_UE5\GeoTech-Test\GeoTechTest\Plugins\Minesweeper\Intermediate\Build\Win64\UnrealEditor\Development\Minesweeper\Module.Minesweeper.cpp
 /I .
-/I D:\Cyrus\AW\GeoTech-Test\GeoTechTest\Plugins\Minesweeper\Source\Minesweeper\Private
+/I D:\Workspace_UE5\GeoTech-Test\GeoTechTest\Plugins\Minesweeper\Source\Minesweeper\Private
 /I Runtime
 /I Runtime\Projects\Public
 /I Runtime\TraceLog\Public
@@ -252,8 +252,8 @@ D:\Cyrus\AW\GeoTech-Test\GeoTechTest\Plugins\Minesweeper\Intermediate\Build\Win6
 /I ..\Intermediate\Build\Win64\UnrealEditor\Inc\AIModule
 /I Runtime\AIModule\Public
 /I Runtime\AIModule\Classes
-/I D:\Cyrus\AW\GeoTech-Test\GeoTechTest\Plugins\Minesweeper\Source
-/I D:\Cyrus\AW\GeoTech-Test\GeoTechTest\Plugins\Minesweeper\Source\Minesweeper\Public
+/I D:\Workspace_UE5\GeoTech-Test\GeoTechTest\Plugins\Minesweeper\Source
+/I D:\Workspace_UE5\GeoTech-Test\GeoTechTest\Plugins\Minesweeper\Source\Minesweeper\Public
 /I ThirdParty\mimalloc\include
 /I ThirdParty\LibTiff\Source\Win64
 /I ThirdParty\LibTiff\Source
@@ -274,12 +274,12 @@ D:\Cyrus\AW\GeoTech-Test\GeoTechTest\Plugins\Minesweeper\Intermediate\Build\Win6
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt"
-/FI"D:\Cyrus\AW\GeoTech-Test\GeoTechTest\Intermediate\Build\Win64\GeoTechTestEditor\Development\UnrealEd\SharedPCH.UnrealEd.ShadowErrors.h"
-/FI"D:\Cyrus\AW\GeoTech-Test\GeoTechTest\Plugins\Minesweeper\Intermediate\Build\Win64\UnrealEditor\Development\Minesweeper\Definitions.Minesweeper.h"
-/Yu"D:\Cyrus\AW\GeoTech-Test\GeoTechTest\Intermediate\Build\Win64\GeoTechTestEditor\Development\UnrealEd\SharedPCH.UnrealEd.ShadowErrors.h"
-/Fp"D:\Cyrus\AW\GeoTech-Test\GeoTechTest\Intermediate\Build\Win64\GeoTechTestEditor\Development\UnrealEd\SharedPCH.UnrealEd.ShadowErrors.h.pch"
-/Fo"D:\Cyrus\AW\GeoTech-Test\GeoTechTest\Plugins\Minesweeper\Intermediate\Build\Win64\UnrealEditor\Development\Minesweeper\Module.Minesweeper.cpp.obj"
-/sourceDependencies D:\Cyrus\AW\GeoTech-Test\GeoTechTest\Plugins\Minesweeper\Intermediate\Build\Win64\UnrealEditor\Development\Minesweeper\Module.Minesweeper.cpp.json
+/FI"D:\Workspace_UE5\GeoTech-Test\GeoTechTest\Intermediate\Build\Win64\GeoTechTestEditor\Development\UnrealEd\SharedPCH.UnrealEd.ShadowErrors.h"
+/FI"D:\Workspace_UE5\GeoTech-Test\GeoTechTest\Plugins\Minesweeper\Intermediate\Build\Win64\UnrealEditor\Development\Minesweeper\Definitions.Minesweeper.h"
+/Yu"D:\Workspace_UE5\GeoTech-Test\GeoTechTest\Intermediate\Build\Win64\GeoTechTestEditor\Development\UnrealEd\SharedPCH.UnrealEd.ShadowErrors.h"
+/Fp"D:\Workspace_UE5\GeoTech-Test\GeoTechTest\Intermediate\Build\Win64\GeoTechTestEditor\Development\UnrealEd\SharedPCH.UnrealEd.ShadowErrors.h.pch"
+/Fo"D:\Workspace_UE5\GeoTech-Test\GeoTechTest\Plugins\Minesweeper\Intermediate\Build\Win64\UnrealEditor\Development\Minesweeper\Module.Minesweeper.cpp.obj"
+/sourceDependencies D:\Workspace_UE5\GeoTech-Test\GeoTechTest\Plugins\Minesweeper\Intermediate\Build\Win64\UnrealEditor\Development\Minesweeper\Module.Minesweeper.cpp.json
 /Zc:inline
 /nologo
 /Oi

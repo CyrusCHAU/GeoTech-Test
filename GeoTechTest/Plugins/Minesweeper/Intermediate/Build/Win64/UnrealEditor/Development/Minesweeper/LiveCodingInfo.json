@@ -2,10 +2,10 @@
 	"RemapUnityFiles": 
 	{
 		"Module.Minesweeper.cpp.obj": [
+			"Minesweeper.cpp.obj",
 			"MinesweeperCommands.cpp.obj",
 			"MinesweeperStyle.cpp.obj",
-			"SMinesWidget.cpp.obj",
-			"Minesweeper.cpp.obj"
+			"SMinesWidget.cpp.obj"
 		]
 	}
 }

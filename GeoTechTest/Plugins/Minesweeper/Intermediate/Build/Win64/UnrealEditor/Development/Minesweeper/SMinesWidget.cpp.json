@@ -1,0 +1,15 @@
+{
+    "Version": "1.1",
+    "Data": {
+        "Source": "d:\\cyrus\\aw\\geotech-test\\geotechtest\\plugins\\minesweeper\\source\\minesweeper\\private\\smineswidget.cpp",
+        "ProvidedModule": "",
+        "PCH": "d:\\cyrus\\aw\\geotech-test\\geotechtest\\intermediate\\build\\win64\\geotechtesteditor\\development\\unrealed\\sharedpch.unrealed.shadowerrors.h.pch",
+        "Includes": [
+            "d:\\cyrus\\aw\\geotech-test\\geotechtest\\plugins\\minesweeper\\intermediate\\build\\win64\\unrealeditor\\development\\minesweeper\\definitions.minesweeper.h",
+            "d:\\cyrus\\aw\\geotech-test\\geotechtest\\plugins\\minesweeper\\source\\minesweeper\\public\\smineswidget.h",
+            "d:\\program files\\epic games\\ue_5.0\\engine\\source\\runtime\\slate\\public\\slateoptmacros.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}
